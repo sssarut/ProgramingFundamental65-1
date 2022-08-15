@@ -1,0 +1,15 @@
+1. Input integer and store it in new variable i
+2. Declare new variable x and set its value to 0
+3. Declare new variable y and set its value to 0
+4. Loop if y is not equal to i
+	1. If x or y is equal to 0 or i - 1
+		1. Display *
+	2. Other than above condition 
+		1. Display spacebar
+	3. Increase value of x by 1
+	4. If y is equal to i
+		1. exit the program
+	5. If x is equal to i
+		1. Display newline
+		2. Set value of x to 0
+		3. Increase value of y by 1

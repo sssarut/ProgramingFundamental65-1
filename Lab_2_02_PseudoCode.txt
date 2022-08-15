@@ -1,0 +1,10 @@
+1. Input first number and store it in variable x
+2. Input second number and store it in variable y
+3. If x > y
+	1. swap value inside x with value inside y
+4. Declare variable temp = y
+5. Loop if temp >= 0
+	1. If x and y is divisible by temp 
+		1. Display temp
+		2. Exit the program
+	2. Decrease value of temp by 1
