@@ -1,0 +1,11 @@
+1. Declare i = 2
+2. Input Integer and store it in variale nbr
+3. Loop if i <= nbr
+	1. if nbr == i....
+		1. Display nbr and newline
+		2. Exit the program
+	2. else if nbr is divisible by i....
+		1. Display i followed by x 
+		2. nbr = nbr / i
+	3. else....
+		1. increase i by 1
