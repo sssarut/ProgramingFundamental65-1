@@ -1,0 +1,12 @@
+1. Set value of variable n to 1
+2. Loop if n <= 10000
+	1. Set value of variable i to 1
+	2. Set value of variable sum to 0
+	3. Loop if i < n
+		1. if (n % i) equal to 0
+			1. add i to the value of sum
+		2. increase the value of i by 1
+	4. if sum is equal to n
+		1. Display the value of n
+	5. increase the value of n by 1
+	

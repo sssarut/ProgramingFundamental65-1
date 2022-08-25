@@ -1,0 +1,9 @@
+1. Input Ingeter and store it in variable nbr
+2. Loop if nbr >= 10
+	1. Set variable temp equal to value store in nbr
+	2. Set vlaue of variable sum to 0
+	3. Loop if temp > 0
+		1. add (temp % 10) to the value of sum
+		2. divide value of temp by 10
+	4. Set the value of nbr equal to sum
+3. Display the value of nbr

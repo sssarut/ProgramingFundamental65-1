@@ -1,0 +1,33 @@
+1. set the value of variable i to 0
+2. Input the value store in variable nbr
+3. set variable len equal to (2 * nbr) - 1
+4. create a 2D array with allocated memory
+5. set value of variable idx to 0
+6. set value of oof set variable to nbr - 1
+7. set flag to false
+8. loop if idx < len
+	1. set variable n = 0
+	2. loop if n <= offset
+		1. set value of variable in 2D array at (nbr - (1 + n)), idx to 1
+		2. set value of variable in 2D array at (nbr - (1 - n)), idx to 1
+		3. increase the value of n by 1
+	3. if offset is equal to 0
+		1. set flag to true
+	4. if flag is false 
+		1. decrease the value of offset by 1
+	5. if flag is true 
+		1. increase the value of offset by 1
+	6. increase the value of idx by 1
+9. set value of idx to 0
+10. loop if idx < len 
+	1. set value of idx2 to 0
+	2. loop if idx < len
+		1.if value of point (idx, idx2) in 2D array is equal to 1
+			1. Display *
+		2. else 
+			1. Display space
+		3. increase the value of idx2 by 1
+	3. increase the value of idx by 1
+	4. display newline
+
+
