@@ -2,8 +2,8 @@ const int	rightButton = 10;
 const int	green = 2;
 const int	middleButton = 11;
 const int	yellow = 3;
-const int	middleButton = 12;
-const int	yellow = 4;
+const int	leftButton = 12;
+const int	red = 4;
 
 bool	buttonstateGreen = false;
 bool	buttonstateYellow = false;
@@ -31,11 +31,11 @@ void	checkRight()
 
 void	checkLeft()
 {
-	if(digitalRead(leftButton) == LOW && stateRed == false)
+	if(digitalRead(leftButton) == HIGH && stateRed == false)
 	{
 		timerRed = 3000;
 	}
-	if(digitalRead(leftButton) == LOW && stateRed == true)
+	if(digitalRead(leftButton) == HIGH && stateRed == true)
 	{
 		timerRed = 0;
 	}
@@ -46,14 +46,6 @@ void	checkMiddle()
 	if(digitalRead(middleButton) == LOW && stateYellow == false && stateGreen == false && stateRed == false)
 	{
 		timerYellow = 2000;
-	}
-}
-
-void	checkLeft()
-{
-	if(digitalRead(leftButton) == LOW)
-	{
-		timerRed = 3000;
 	}
 }
 
@@ -87,6 +79,11 @@ void	loop()
 		stateRed = true;
 		digitalWrite(red, true);
 	}
+	//yellow case
+	if(timerYellow != 0 && timerYelllow % 500)
+	{
+		digitalWrite(yellow, !digitalRead(yellow));
+	}
 	//Check if there any timer reach 0 and turn it off
 	if(timerGreen == 0 && stateGreen == true)
 	{
@@ -98,10 +95,10 @@ void	loop()
 		stateRed = false;
 		digitalWrite(red, false);
 	}
-	if(timerGreen == 0 && stateGreen == true)
+	if(timerYellow == 0 && stateYellow == true)
 	{
-		stateGreen = false;
-		digitalWrite(green, false);
+		stateYellow = false
+		digitalWrite(yellow, false);
 	}
 	//Counting down section
 	if(timerGreen != 0)
