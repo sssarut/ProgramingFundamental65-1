@@ -62,7 +62,7 @@ void	setup()
 
 void	loop()
 {
-	delay(100);
+	delay(125);
 	checkRight();
 	checkLeft();
 	checkMiddle();
@@ -106,14 +106,14 @@ void	loop()
 	//Counting down section
 	if(timerGreen != 0)
 	{
-		timerGreen -= 100;
+		timerGreen -= 125;
 	}
 	if(timerYellow != 0)
 	{
-		timerYellow -= 100;
+		timerYellow -= 125;
 	}
 	if(timerRed != 0)
 	{
-		timerRed -= 100;
+		timerRed -= 125;
 	}
 }
