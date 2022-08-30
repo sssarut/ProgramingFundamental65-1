@@ -63,6 +63,9 @@ void	setup()
 void	loop()
 {
 	delay(100);
+	checkRight();
+	checkLeft();
+	checkMiddle();
 	//Check if there are any time added to the timer and turn on the LED
 	if(timerGreen != 0 && stateGreen == false)
 	{
@@ -80,7 +83,7 @@ void	loop()
 		digitalWrite(red, true);
 	}
 	//yellow case
-	if(timerYellow != 0 && timerYelllow % 500)
+	if(timerYellow != 0 && timerYellow % 500 == 0)
 	{
 		digitalWrite(yellow, !digitalRead(yellow));
 	}
@@ -97,7 +100,7 @@ void	loop()
 	}
 	if(timerYellow == 0 && stateYellow == true)
 	{
-		stateYellow = false
+		stateYellow = false;
 		digitalWrite(yellow, false);
 	}
 	//Counting down section
