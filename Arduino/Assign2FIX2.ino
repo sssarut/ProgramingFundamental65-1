@@ -1,16 +1,16 @@
-#include<ButtonDebounce.h>
+//#include<ButtonDebounce.h>
 
-#define R_LED 2 
+#define R_LED 4 
 #define Y_LED 3
-#define G_LED 4
+#define G_LED 2
 
-#define R_BUTTON 10
+#define R_BUTTON 12
 #define Y_BUTTON 11
-#define G_BUTTON 12
+#define G_BUTTON 10
 
-ButtonDebounce R_S(10, 250);
+/*ButtonDebounce R_S(10, 250);
 ButtonDebounce Y_S(11, 250);
-ButtonDebounce G_S(12, 250);
+ButtonDebounce G_S(12, 250);*/
 
 unsigned long	R_TIMER = 0;
 unsigned long	Y_TIMER = 0;
@@ -32,9 +32,9 @@ void	setup(void)
 
 void	loop(void)
 {
-	R_S.update();
+	/*R_S.update();
 	Y_S.update();
-	G_S.update();
+	G_S.update();*/
 	//Turn green light on
 	if(digitalRead(G_BUTTON) == LOW && G_ST == 0 && millis() - G_TIMER >= 250 && R_ST == 0)
 	{
@@ -52,13 +52,13 @@ void	loop(void)
 		digitalWrite(G_LED, LOW);
 		G_ST = 0;
 	}
-	if(digitalRead(R_BUTTON) == LOW && R_ST == 0 && millis() - R_TIMER >= 250)
+	if(digitalRead(R_BUTTON) == HIGH && R_ST == 0 && millis() - R_TIMER >= 250)
 	{
 		R_TIMER = millis();
 		digitalWrite(R_LED, HIGH);
 		R_ST = 1;
 	}
-	else if(digitalRead(R_BUTTON) == LOW && R_ST == 1 && millis() - R_TIMER >= 250)
+	else if(digitalRead(R_BUTTON) == HIGH && R_ST == 1 && millis() - R_TIMER >= 250)
 	{
 		digitalWrite(R_LED, LOW);
 		R_ST = 0;
@@ -68,4 +68,5 @@ void	loop(void)
 		digitalWrite(R_LED, LOW);
 		R_ST = 0;
 	}
+
 }
