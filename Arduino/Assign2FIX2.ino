@@ -83,7 +83,7 @@ void	loop(void)
 		Y_ST = 0;
 		digitalWrite(Y_LED, LOW);
 	}
-	else if(Y_ST = 1 && millis() - Y_TIMER >= BUFFER)
+	else if(Y_ST == 1 && millis() - Y_TIMER >= BUFFER)
 	{
 		digitalWrite(Y_LED, !digitalRead(Y_LED));
 		BUFFER += 500;
