@@ -36,7 +36,7 @@ void	loop(void)
 	Y_S.update();
 	G_S.update();
 	//Turn green light on
-	if(digitalRead(G_BUTTON) == LOW && G_ST == 0 && millis() - G_TIMER >= 250)
+	if(digitalRead(G_BUTTON) == LOW && G_ST == 0 && millis() - G_TIMER >= 250 && R_ST == 0)
 	{
 		G_TIMER = millis();
 		digitalWrite(G_LED, HIGH);
@@ -51,5 +51,21 @@ void	loop(void)
 	{
 		digitalWrite(G_LED, LOW);
 		G_ST = 0;
+	}
+	if(digitalRead(R_BUTTON) == LOW && R_ST == 0 && millis() - R_TIMER >= 250)
+	{
+		R_TIMER = millis();
+		digitalWrite(R_LED, HIGH);
+		R_ST = 1;
+	}
+	else if(digitalRead(R_BUTTON) == LOW && R_ST == 1 && millis() - R_TIMER >= 250)
+	{
+		digitalWrite(R_LED, LOW);
+		R_ST = 0;
+	}
+	if(millis() - R_TIMER >= 3000 && R_ST == 1)
+	{
+		digitalWrite(R_LED, LOW);
+		R_ST = 0;
 	}
 }
