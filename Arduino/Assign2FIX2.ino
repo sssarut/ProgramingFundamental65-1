@@ -44,6 +44,7 @@ void	loop(void)
 	}
 	else if(digitalRead(G_BUTTON) == LOW && G_ST == 1 && millis() - G_TIMER >= 250)
 	{
+		G_TIMER = millis();
 		digitalWrite(G_LED, LOW);
 		G_ST = 0;
 	}
@@ -60,6 +61,7 @@ void	loop(void)
 	}
 	else if(digitalRead(R_BUTTON) == HIGH && R_ST == 1 && millis() - R_TIMER >= 250)
 	{
+		R_TIMER = millis();
 		digitalWrite(R_LED, LOW);
 		R_ST = 0;
 	}
