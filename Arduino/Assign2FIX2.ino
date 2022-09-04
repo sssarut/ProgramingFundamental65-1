@@ -19,6 +19,7 @@ unsigned long	G_TIMER = 0;
 int	R_ST = 0;
 int	Y_ST = 0;
 int	G_ST = 0;
+int	BUFFER = 0;
 
 void	setup(void)
 {
@@ -70,5 +71,21 @@ void	loop(void)
 		digitalWrite(R_LED, LOW);
 		R_ST = 0;
 	}
-
+	if(digitalRead(Y_BUTTON) == LOW && Y_ST == 0 && R_ST == 0 && G_ST == 0)
+	{
+		Y_TIMER = millis();
+		digitalWrite(Y_LED, HIGH);
+		Y_ST = 1;
+		BUFFER = 500;
+	}
+	if(Y_ST == 1 && millis() - Y_TIMER >= 2000)
+	{
+		Y_ST = 0;
+		digitalWrite(Y_LED, LOW);
+	}
+	else if(Y_ST = 1 && millis() - Y_TIMER >= BUFFER)
+	{
+		digitalWrite(Y_LED, !digitalRead(Y_LED));
+		BUFFER += 500;
+	}
 }
