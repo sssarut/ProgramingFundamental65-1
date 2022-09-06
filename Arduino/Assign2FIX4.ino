@@ -43,20 +43,20 @@ void	loop(void)
 	Y_S.update();
 	G_S.update();*/
 	//Turn green light on
-	if(millis() - M_TIMER >= 100)
+	/*if(millis() - M_TIMER >= 100)
 	{	
 		LastRState = digitalRead(R_BUTTON);
 		LastGState = digitalRead(G_BUTTON);
 		M_TIMER = millis();
-	}
+	}*/
 
-	if(digitalRead(G_BUTTON) == LOW && G_ST == 0 && millis() - G_TIMER >= 250 && R_ST == 0 && digitalRead(G_BUTTON) != LastGState)
+	if(digitalRead(G_BUTTON) == LOW && G_ST == 0 && millis() - G_TIMER >= 250 && R_ST == 0)
 	{
 		G_TIMER = millis();
 		digitalWrite(G_LED, HIGH);
 		G_ST = 1;
 	}
-	else if(digitalRead(G_BUTTON) == LOW && G_ST == 1 && millis() - G_TIMER >= 250 && digitalRead(G_BUTTON) != LastGState)
+	else if(digitalRead(G_BUTTON) == LOW && G_ST == 1 && millis() - G_TIMER >= 250)
 	{
 		G_TIMER = millis();
 		digitalWrite(G_LED, LOW);
@@ -67,13 +67,13 @@ void	loop(void)
 		digitalWrite(G_LED, LOW);
 		G_ST = 0;
 	}
-	if(digitalRead(R_BUTTON) == HIGH && R_ST == 0 && millis() - R_TIMER >= 250 && digitalRead(R_BUTTON) != LastRState)
+	if(digitalRead(R_BUTTON) == HIGH && R_ST == 0 && millis() - R_TIMER >= 250)
 	{
 		R_TIMER = millis();
 		digitalWrite(R_LED, HIGH);
 		R_ST = 1;
 	}
-	else if(digitalRead(R_BUTTON) == HIGH && R_ST == 1 && millis() - R_TIMER >= 250 && digitalRead(R_BUTTON) != LastRState)
+	else if(digitalRead(R_BUTTON) == HIGH && R_ST == 1 && millis() - R_TIMER >= 250)
 	{
 		R_TIMER = millis();
 		digitalWrite(R_LED, LOW);
