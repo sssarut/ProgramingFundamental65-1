@@ -50,13 +50,13 @@ void	loop(void)
 		M_TIMER = millis();
 	}
 
-	if(digitalRead(G_BUTTON) == LOW && G_ST == 0 && millis() - G_TIMER >= 100 && R_ST == 0 && digitalRead(G_BUTTON) != LastGState)
+	if(digitalRead(G_BUTTON) == LOW && G_ST == 0 && R_ST == 0 && digitalRead(G_BUTTON) != LastGState)
 	{
 		G_TIMER = millis();
 		digitalWrite(G_LED, HIGH);
 		G_ST = 1;
 	}
-	else if(digitalRead(G_BUTTON) == LOW && G_ST == 1 && millis() - G_TIMER >= 100 && digitalRead(G_BUTTON) != LastGState)
+	else if(digitalRead(G_BUTTON) == LOW && G_ST == 1 && digitalRead(G_BUTTON) != LastGState)
 	{
 		G_TIMER = millis();
 		digitalWrite(G_LED, LOW);
@@ -67,13 +67,13 @@ void	loop(void)
 		digitalWrite(G_LED, LOW);
 		G_ST = 0;
 	}
-	if(digitalRead(R_BUTTON) == HIGH && R_ST == 0 && millis() - R_TIMER >= 100 && digitalRead(R_BUTTON) != LastRState)
+	if(digitalRead(R_BUTTON) == HIGH && R_ST == 0 && digitalRead(R_BUTTON) != LastRState)
 	{
 		R_TIMER = millis();
 		digitalWrite(R_LED, HIGH);
 		R_ST = 1;
 	}
-	else if(digitalRead(R_BUTTON) == HIGH && R_ST == 1 && millis() - R_TIMER >= 100 digitalRead(R_BUTTON) != LastRState)
+	else if(digitalRead(R_BUTTON) == HIGH && R_ST == 1 && digitalRead(R_BUTTON) != LastRState)
 	{
 		R_TIMER = millis();
 		digitalWrite(R_LED, LOW);
