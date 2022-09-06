@@ -43,7 +43,7 @@ void	loop(void)
 	Y_S.update();
 	G_S.update();*/
 	//Turn green light on
-	if(millis() - M_TIMER >= 100)
+	if(millis() - M_TIMER >= 250)
 	{	
 		LastRState = digitalRead(R_BUTTON);
 		LastGState = digitalRead(G_BUTTON);
