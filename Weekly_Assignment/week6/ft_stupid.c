@@ -4,16 +4,18 @@
 
 int main(void)
 {
-	char	str1[1000];
+	char	*str1;
+	char	str2[1000];
 	char	pain[5] = "aeiou";
-	char	c;
 	int		n = 0;
 	int		i = 0;
+	int		j = 0;
 	int		flag = 0;
 
 	printf("Insert your encoded text : ");
+	str1 = (char *)malloc(sizeof(char) * 1000);
 	scanf("%s", str1);
-	while ((str1[n] >= 'a' && str1[n] <= 'z') || str1[n] == ' ')
+	while (n < 1000)
 	{
 		flag = 0;
 		i = 0;
@@ -23,8 +25,8 @@ int main(void)
 			{
 				if(str1[n] == pain[i] && str1[n + 1] == 'p' && str1[n + 2] == pain[i])
 				{
-					c = str1[n];
-					write(1, &c, 1);
+					str2[j] = str1[n];
+					j++;
 					n = n + 2;
 					i = 6;
 					flag = 1;
@@ -34,10 +36,11 @@ int main(void)
 		}
 		if(flag != 1)
 		{
-			c = str1[n];
-			write(1, &c, 1);
+			str2[j] = str1[n];
+			j++;
 		}
 		n++;
 	}
+	printf("%s", str2);
 	return (0);
 }
