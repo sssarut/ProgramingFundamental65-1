@@ -21,16 +21,13 @@ int main(void)
 		i = 0;
 		while (i < 5)
 		{
-			if(str1[n] != ' ' && str1[n + 1] != ' ' && str1[n + 2] != ' ')
+			if(str1[n] == pain[i] && str1[n + 1] == 'p' && str1[n + 2] == pain[i])
 			{
-				if(str1[n] == pain[i] && str1[n + 1] == 'p' && str1[n + 2] == pain[i])
-				{
-					str2[j] = str1[n];
-					j++;
-					n = n + 2;
-					i = 6;
-					flag = 1;
-				}
+				str2[j] = str1[n];
+				j++;
+				n = n + 2;
+				i = 6;
+				flag = 1;
 			}
 			i++;
 		}
