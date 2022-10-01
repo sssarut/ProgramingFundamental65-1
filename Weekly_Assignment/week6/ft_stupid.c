@@ -14,8 +14,8 @@ int main(void)
 
 	printf("Insert your encoded text : ");
 	str1 = (char *)malloc(sizeof(char) * 1000);
-	scanf("%s", str1);
-	while (n < 1000)
+	scanf("%999[^\n]", str1);
+	while (str1[n] != '\0')
 	{
 		flag = 0;
 		i = 0;
@@ -39,5 +39,6 @@ int main(void)
 		n++;
 	}
 	printf("%s", str2);
+	//printf("%c", str1[11]);
 	return (0);
 }
