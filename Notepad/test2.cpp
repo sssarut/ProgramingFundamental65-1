@@ -10,7 +10,7 @@ HANDLE wHnd;
 HANDLE rHnd;
 DWORD fdwMode;
 INPUT_RECORD eventBuffer[2000];
-int color;
+int color = 7;
 CHAR_INFO consoleBuffer[screen_x * screen_y];
 COORD bufferSize = { screen_x,screen_y };
 COORD characterPos = { 0,0 };
@@ -77,11 +77,11 @@ void drawship(ship destine)
     consoleBuffer[(destine.x + 1) + screen_x * destine.y].Char.AsciiChar = '-';
     consoleBuffer[(destine.x - 2) + screen_x * destine.y].Char.AsciiChar = '<';
     consoleBuffer[(destine.x + 2) + screen_x * destine.y].Char.AsciiChar = '>';
-    consoleBuffer[destine.x + screen_x * destine.y].Attributes = 7;
-    consoleBuffer[(destine.x - 1) + screen_x * destine.y].Attributes = 7;
-    consoleBuffer[(destine.x + 1) + screen_x * destine.y].Attributes = 7;
-    consoleBuffer[(destine.x - 2) + screen_x * destine.y].Attributes = 7;
-    consoleBuffer[(destine.x + 2) + screen_x * destine.y].Attributes = 7;
+    consoleBuffer[destine.x + screen_x * destine.y].Attributes = color;
+    consoleBuffer[(destine.x - 1) + screen_x * destine.y].Attributes = color;
+    consoleBuffer[(destine.x + 1) + screen_x * destine.y].Attributes = color;
+    consoleBuffer[(destine.x - 2) + screen_x * destine.y].Attributes = color;
+    consoleBuffer[(destine.x + 2) + screen_x * destine.y].Attributes = color;
 }
 
 void drawbullet(bullet death)
@@ -103,11 +103,11 @@ void eraseship(ship destine)
     consoleBuffer[(destine.x + 1) + screen_x * destine.y].Char.AsciiChar = ' ';
     consoleBuffer[(destine.x - 2) + screen_x * destine.y].Char.AsciiChar = ' ';
     consoleBuffer[(destine.x + 2) + screen_x * destine.y].Char.AsciiChar = ' ';
-    consoleBuffer[destine.x + screen_x * destine.y].Attributes = color;
-    consoleBuffer[(destine.x - 1) + screen_x * destine.y].Attributes = color;
-    consoleBuffer[(destine.x + 1) + screen_x * destine.y].Attributes = color;
-    consoleBuffer[(destine.x - 2) + screen_x * destine.y].Attributes = color;
-    consoleBuffer[(destine.x + 2) + screen_x * destine.y].Attributes = color;
+    consoleBuffer[destine.x + screen_x * destine.y].Attributes = 0;
+    consoleBuffer[(destine.x - 1) + screen_x * destine.y].Attributes = 0;
+    consoleBuffer[(destine.x + 1) + screen_x * destine.y].Attributes = 0;
+    consoleBuffer[(destine.x - 2) + screen_x * destine.y].Attributes = 0;
+    consoleBuffer[(destine.x + 2) + screen_x * destine.y].Attributes = 0;
 }
 
 void erasebullet(bullet death)
@@ -144,7 +144,9 @@ int main()
     setcursor(0);
     srand(time(NULL));
     i = 0;
-    while (i < 80)
+    destine.x = 40;
+    destine.y = 10;
+    while (i < 20)
     {
         do
         {
@@ -157,10 +159,11 @@ int main()
     }
     while (play)
     {
+        drawship(destine);
         GetNumberOfConsoleInputEvents(rHnd, &numEvents);
         fill_buffer_to_console();
         i = 0;
-        while (i < 80)
+        while (i < 20)
         {
             erasestar(t[i]);
             if (t[i].y == 24)
@@ -208,13 +211,18 @@ int main()
                     }
                     else if (eventBuffer[i].Event.MouseEvent.dwEventFlags & MOUSE_MOVED) 
                     {
-                        //MOUSEMOVE                                       
+                        if(posx >= 0 && posx <= 79 && posy >= 0 && posy <= 24)
+                        {
+                            eraseship(destine);
+                            destine.x = posx;
+                            destine.y = posy;
+                        }                                    
                     }
                 }
             }
             //delete [] eventBuffer;
         }
-        Sleep(100);
+        Sleep(70);
     }
     return 0;
 }
