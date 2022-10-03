@@ -11,6 +11,7 @@ HANDLE rHnd;
 DWORD fdwMode;
 INPUT_RECORD eventBuffer[2000];
 int color = 7;
+int hp = 10;
 CHAR_INFO consoleBuffer[screen_x * screen_y];
 COORD bufferSize = { screen_x,screen_y };
 COORD characterPos = { 0,0 };
@@ -49,6 +50,12 @@ int setConsole(int x, int y)
 }
 
 //EXAMPLE 
+void    gotoxy(short int x, short int y)
+{
+    COORD c = {x, y};
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
+}
+
 void fill_data_to_buffer()
 {
     for (int y = 0; y < screen_y; ++y) 
@@ -92,6 +99,17 @@ void drawbullet(bullet death)
 
 void drawstar(star t)
 {
+    /*if (consoleBuffer[(t.x + screen_x * t.y)].Char.AsciiChar != ' ')
+    {
+        hp -= 1;
+        do
+        {
+            t.x = rand() % 80;
+            t.y = 1;
+        } 
+        while (consoleBuffer[t.x + (screen_x * t.y)].Char.AsciiChar != ' ');
+        drawstar(t);
+    }*/
     consoleBuffer[(t.x + screen_x * t.y)].Char.AsciiChar = '*';
     consoleBuffer[(t.x + screen_x * t.y)].Attributes = 6;
 }
@@ -153,12 +171,14 @@ int main()
             t[i].x = rand() % 80;
             t[i].y = rand() % 25;
         } 
-        while (consoleBuffer[t[i].x + screen_x * t[i].y].Char.AsciiChar == '*');
+        while (consoleBuffer[t[i].x + screen_x * t[i].y].Char.AsciiChar != ' ');
         drawstar(t[i]);
         i++;
     }
     while (play)
     {
+        //gotoxy(60, 3);
+        //printf("HP : %d", hp);
         drawship(destine);
         GetNumberOfConsoleInputEvents(rHnd, &numEvents);
         fill_buffer_to_console();
