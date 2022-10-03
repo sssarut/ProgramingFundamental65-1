@@ -1,0 +1,5 @@
+Name : Roland Level : 10 Score : 5200
+Name : Angela Level : 7 Score : 2350
+Name : Malkuth Level : 4 Score : 1500
+Name : Hokma Level : 1 Score : 100
+Name : Binah Level : 1 Score : 100
