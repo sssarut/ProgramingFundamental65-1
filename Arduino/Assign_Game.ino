@@ -60,7 +60,7 @@ void drawScreen(void)
 
 void soundBounce() 
 {
-  tone(BEEPER, 500, 50);
+		tone(BEEPER, 500, 50);
 }
 
 void soundPoint() 
