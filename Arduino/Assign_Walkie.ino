@@ -5,7 +5,7 @@
 String buffer = "";
 int Sswitch = 1;
 char n;
-String format = "TOKEN#"
+String format = "TOKEN#";
 
 void	setup(void)
 {
@@ -81,7 +81,7 @@ void	receiveEvent(void)
 	//012345678
 	//TOKEN#0#
 	//TOKEN#1#T#message
-	While (1 < Wire.available())
+	while (1 < Wire.available())
 	{
 		char a = Wire.read();
 		buffer += a;
@@ -108,7 +108,7 @@ void	receiveEvent(void)
 	else if (buffer[6] == '1')
 	{
 		// and the target is this device
-		if (buffer[8] - '0' = Device - 1)
+		if (buffer[8] - '0' == Device - 1)
 		{
 			// Print out the message
 			int p = 10;
