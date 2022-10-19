@@ -3,24 +3,25 @@
 # define Device 5
 
 String buffer = "";
-int switch = 1;
+int Sswitch = 1;
+char n;
 String format = "TOKEN#"
 
 void	setup(void)
 {
 	// Initial the Serial process & Begin itself as Slave
 	Serial.begin(9600);
-	switch();	
+	Mswitch();	
 }
 
 void	loop(void)
 {
 	// Get the first input normally its is target device number
 	// Switch itself as master
-	if (Serial.available() && switch == 0)
+	if (Serial.available() && Sswitch == 0)
 	{
-		char n = Serial.read();
-		switch();
+		n = Serial.read();
+		Mswitch();
 	}
 	// Get the message input stor it in buffer
 	while (Serial.available())
@@ -39,12 +40,12 @@ void	loop(void)
 		}
 	}
 	// Format the message as token and send it to device next in the line 
-	if (switch == 1 && buffer != "")
+	if (Sswitch == 1 && buffer != "")
 	{
-		strcat(format, "1#");
-		strcat(format, n);
-		strcat(format, "#");
-		strcat(format, buffer);
+		format += "1#";
+		format += n;
+		format += "#";
+		format += buffer;
 		Wire.beginTransmission(Device);
 		int i = 0;
 		while (format[i])
@@ -53,25 +54,25 @@ void	loop(void)
 			i++;
 		}
 		Wire.endTransmission();
-		switch();
+		Mswitch();
 		format = "TOKEN#";
 		buffer = "";
 	}
 }
 
-void	switch(void)
+void	Mswitch(void)
 {
 	// Switch form master mode to slave mode and vice versa the switch vaiable mean the state 0 is  slave 1 is master
-	if (switch == 0)
+	if (Sswitch == 0)
 	{
 		Wire.begin();
 	}
-	else if (switch == 1)
+	else if (Sswitch == 1)
 	{
 		Wire.begin(Device - 1);
 		Wire.onReceive(receiveEvent);
 	}
-	switch = !switch;
+	Sswitch = !Sswitch;
 }
 
 void	receiveEvent(void)
@@ -91,7 +92,7 @@ void	receiveEvent(void)
 	if (buffer[6] == '0')
 	{
 		// Pass token to next-in-line device
-		switch();
+		Mswitch();
 		Wire.beginTransmission(Device);
 		int j = 0;
 		while (buffer[j])
@@ -100,7 +101,7 @@ void	receiveEvent(void)
 			j++;
 		}
 		Wire.endTransmission();
-		switch();
+		Mswitch();
 		buffer = "";
 	}
 	// If State is 1
@@ -122,7 +123,7 @@ void	receiveEvent(void)
 		}
 		// If target is this device buffer should be state 0 and if its not it will pass by the occupied token to
 		// the next-in-line device
-		switch();
+		Mswitch();
 		Wire.beginTransmission(Device);
 		int l = 0;
 		while (buffer[l])
@@ -131,6 +132,6 @@ void	receiveEvent(void)
 			l++;
 		}
 		Wire.endTransmission();
-		switch();
+		Mswitch();
 	}
 }
