@@ -8,17 +8,21 @@ String format = "TOKEN#"
 
 void	setup(void)
 {
+	// Initial the Serial process & Begin itself as Slave
 	Serial.begin(9600);
 	switch();	
 }
 
 void	loop(void)
 {
+	// Get the first input normally its is target device number
+	// Switch itself as master
 	if (Serial.available() && switch == 0)
 	{
 		char n = Serial.read();
 		switch();
 	}
+	// Get the message input stor it in buffer
 	while (Serial.available())
 	{
 		char c = Serial.read();
@@ -34,6 +38,7 @@ void	loop(void)
 			buffer += '\0';
 		}
 	}
+	// Format the message as token and send it to device next in the line 
 	if (switch == 1 && buffer != "")
 	{
 		strcat(format, "1#");
@@ -56,6 +61,7 @@ void	loop(void)
 
 void	switch(void)
 {
+	// Switch form master mode to slave mode and vice versa the switch vaiable mean the state 0 is  slave 1 is master
 	if (switch == 0)
 	{
 		Wire.begin();
@@ -70,6 +76,7 @@ void	switch(void)
 
 void	receiveEvent(void)
 {
+	// Run on the receiving of token
 	//012345678
 	//TOKEN#0#
 	//TOKEN#1#T#message
@@ -79,8 +86,11 @@ void	receiveEvent(void)
 		buffer += a;
 	}
 	buffer += '\0';
+	// Stored Token in the buffer & if its is on state 1 or 0
+	// If state is 0
 	if (buffer[6] == '0')
 	{
+		// Pass token to next-in-line device
 		switch();
 		Wire.beginTransmission(Device);
 		int j = 0;
@@ -91,11 +101,15 @@ void	receiveEvent(void)
 		}
 		Wire.endTransmission();
 		switch();
+		buffer = "";
 	}
+	// If State is 1
 	else if (buffer[6] == '1')
 	{
+		// and the target is this device
 		if (buffer[8] - '0' = Device - 1)
 		{
+			// Print out the message
 			int p = 10;
 			while (buffer[p])
 			{
@@ -103,8 +117,11 @@ void	receiveEvent(void)
 				p++;
 			}
 			Serial.println('\n');
+			// Reset token to 0 state
 			buffer = "TOKEN#0#";
 		}
+		// If target is this device buffer should be state 0 and if its not it will pass by the occupied token to
+		// the next-in-line device
 		switch();
 		Wire.beginTransmission(Device);
 		int l = 0;

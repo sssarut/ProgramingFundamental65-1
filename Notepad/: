@@ -1,0 +1,9 @@
+WES SOU WAL
+/0/ /0/ /0/ => Nothing Change?
+/0/ /0/ /1/ => WES[R] SOU[R] WAL[G]
+/0/ /1/ /0/ => WES[R] SOU[Y] WAL[W]/[R] => WES[R] SOU[G] WAL[R]
+/0/ /1/ /1/ => WES[R] SOU[Y] WAL[W]/[R] => WES[R] SOU[G] WAL[R] => WES[R] SOU[R] WAL[G] => LOOP
+/1/ /0/ /0/ => WES[Y] SOU[R] WAL[W]/[R] => WES[G] SOU[R] WAL[R]
+/1/ /0/ /1/ => WES[Y] SOU[R] WAL[W]/[R] => WES[G] SOU[R] WAL[R] => WES[R] SOU[R] WAL[G] => LOOP
+/1/ /1/ /0/ => WES[Y] SOU[R] WAL[W]/[R] => WES[G] SOU[R] WAL[R] => WES[Y] SOU[Y] WAL[R] => WES[G] SOU[R] WAL[R]
+/1/ /1/ /1/
