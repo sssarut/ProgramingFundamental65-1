@@ -1,6 +1,6 @@
 #include<Wire.h>
 # define DEVICE 1 
-char buffer[100];
+String buffer;
 int target = 2;
 int send;
 char c;
@@ -19,7 +19,9 @@ void	loop(void)
 	int i = 0;
 	while(Wire.available())
 	{
-		buffer[i] = Wire.read();
+		c = Wire.read();
+		if(c >= 32 && c <= 126)
+			buffer[i] = c;
 		//Serial.print(c);
 		i++;
 	}
@@ -27,7 +29,7 @@ void	loop(void)
 	{
 		if(buffer[0] - '0' == DEVICE)
 		{
-			i = 1
+			i = 1;
 			while(buffer[i])
 			{
 				c = buffer[i];
@@ -48,6 +50,8 @@ void	loop(void)
 			Wire.endTransmission();
 		}
 	}
+	else
+		Serial.println("ERROR");
 	buffer = "";
 	if(target == 2)
 		target = 3;
@@ -75,7 +79,7 @@ void	sending(void)
 				send = buffer[0] - '0';
 			}
 			i = 1;
-			Wire.beginTransmission(send);
+			Wire.beginTransmission(2);
 			while(buffer[i])
 			{
 				Wire.write(buffer[i]);

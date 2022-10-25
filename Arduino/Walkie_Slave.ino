@@ -1,7 +1,7 @@
 #include <Wire.h>
 # define DEVICE 2
 
-char	buffer[100] = "";
+String	buffer = "";
 char	c;
 
 void	setup(void)
@@ -9,6 +9,7 @@ void	setup(void)
 	Wire.begin(DEVICE);
 	Serial.begin(9600);
 	Wire.onRequest(event);
+	Wire.onReceive(event2);
 }
 
 void	loop(void)
@@ -47,4 +48,14 @@ void	event(void)
 	else
 		Wire.write("1Error");
 	buffer = "";
+}
+
+void	event2(void)
+{
+	while(Wire.available())
+	{
+		c = Wire.read();
+		if(c >= 32 && c <= 126)
+			Serial.print(c);
+	}
 }
