@@ -4,6 +4,7 @@
 
 String buffer;
 int state;
+int target;
 
 void setup(void)
 {
@@ -32,11 +33,12 @@ void loop(void)
 				if(state != 1)
 					mode();
 				buffer = "";
+				target = buffer[0] - '0';
 				continue;
 			}
 			if(state == 1)
 			{
-				Wire.beginTransmission(Next);
+				Wire.beginTransmission(target);
 				int i = 0;
 				while (buffer[i])
 				{
