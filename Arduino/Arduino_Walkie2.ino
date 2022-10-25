@@ -74,10 +74,10 @@ void event(int howMany)
 	while (1 < Wire.available())
 	{
 		char a = Wire.read();
-		Serial.print(c);
+		Serial.print(a);
 	}
 	char a = Wire.read();
-	Serial.println(c);
+	Serial.println(a);
 }
 
 void master(void)
