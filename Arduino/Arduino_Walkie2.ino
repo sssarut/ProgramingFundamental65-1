@@ -69,6 +69,17 @@ void mode(void)
 	}
 }
 
+void event(int howMany)
+{
+	while (1 < Wire.available())
+	{
+		char a = Wire.read();
+		Serial.print(c);
+	}
+	char a = Wire.read();
+	Serial.println(c);
+}
+
 void master(void)
 {
 	Wire.begin();
