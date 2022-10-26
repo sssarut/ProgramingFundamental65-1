@@ -8,7 +8,7 @@ char *buffer;
 char strget = '0';
 char c;
 int i;
-int target = 2;
+int target;
 
 //0123456789
 //TOKEN#0#
@@ -28,6 +28,8 @@ void setup(void)
 	Serial.begin(9600);
 	tmpmessage = (char *)malloc(sizeof(char) * 100);
 	buffer = (char *)malloc(sizeof(char) * 100);
+	strcpy(buffer, format);
+	strcpy(tmpmessage, "");
 }
 
 //---------------------------------------------------------//
@@ -35,17 +37,39 @@ void setup(void)
 void loop(void)
 {
 	delay(500);
-	tmpmessage = serial_to_buffer(tmpmessage)
-	if(tmpmessage[0] != '\0')
+	tmpmessage = serial_to_buffer(tmpmessage);
+	if(tmpmessage[0] != '\0' && buffer[6] == '0')
 	{
-		strcat(buffer, format2);
-		strcat(buffer, tmpmessage, 1);
+		strcpy(buffer, format2);
+		strncat(buffer, tmpmessage, 1);
+		//target = tmpmessage[0] - '0';
 		strcat(buffer, "#");
 		strcat(buffer, cut(tmpmessage, 1));
-
+		wire_send(2, buffer, 0)
+		strcpy(buffer, format);
+		strcpy(tmpmessage, "");
 	}
 	else
-	
+	{
+		wire_send(2, buffer, 0);
+	}
+	delay(500);
+	Wire.requestFrom(2, 90);
+	buffer = wire_to_buffer(buffer);
+	wire_send(3, buffer, 0);
+	strcpy(buffer, format);
+	delay(500);
+	Wire.requestForm(3, 90);
+	buffer = wire_to_buffer(buffer);
+	if(buffer[6] == '1')
+	{
+		if(buffer[8] == '1')
+		{
+			buffer_to_serial(buffer, 10);
+			strcpy(buffer, format);
+		}
+	}
+	Serial.println(buffer);
 }
 
 
