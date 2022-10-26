@@ -1,11 +1,10 @@
 #include <Wire.h>
 #include <string.h>
 # define DEVICE 1
-char format[100] = "TOKEN#0#"
-char format2[100] = "TOKEN#1#"+
-986
-char tmpmessage[100] = "";
-char buffer[100] = "";
+char format[100] = "TOKEN#0#";
+char format2[100] = "TOKEN#1#";
+char *tmpmessage;
+char *buffer;
 char strget = '0';
 char c;
 int i;
@@ -27,6 +26,8 @@ void setup(void)
 {
 	Wire.begin();
 	Serial.begin(9600);
+	tmpmessage = (char *)malloc(sizeof(char) * 100);
+	buffer = (char *)malloc(sizeof(char) * 100);
 }
 
 //---------------------------------------------------------//
@@ -37,8 +38,14 @@ void loop(void)
 	tmpmessage = serial_to_buffer(tmpmessage)
 	if(tmpmessage[0] != '\0')
 	{
-		
+		strcat(buffer, format2);
+		strcat(buffer, tmpmessage, 1);
+		strcat(buffer, "#");
+		strcat(buffer, cut(tmpmessage, 1));
+
 	}
+	else
+	
 }
 
 
@@ -79,7 +86,7 @@ void buffer_to_serial(char *str, int start)
 void wire_send(int send, char *str, int start)
 {
 	i = start;
-	Wire.begintransmission(send);
+	Wire.beginTransmission(send);
 	while(str[i])
 	{
 		Wire.write(str[i]);
@@ -110,4 +117,22 @@ char *serial_to_buffer(char *str)
 			str[i] = '\0';
 	}
 	return (str);
+}
+
+
+//---------------------------------------------------------//
+
+char *cut(char *str, int start)
+{
+	char *tab;
+
+	i = start;
+	int j = 0;
+	while(str[i])
+	{
+		tab[j] = str[i];
+		j++;
+		i++;
+	}
+	return (tab);
 }
