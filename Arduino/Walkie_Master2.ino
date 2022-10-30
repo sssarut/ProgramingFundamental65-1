@@ -4,6 +4,7 @@
 char format[100] = "TOKEN#0#";
 char format2[100] = "TOKEN#1#";
 char *tmpmessage;
+char message[100];
 char *buffer;
 char strget = '0';
 char c;
@@ -28,6 +29,7 @@ void setup(void)
 	Serial.begin(9600);
 	tmpmessage = (char *)malloc(sizeof(char) * 100);
 	buffer = (char *)malloc(sizeof(char) * 100);
+  gone(buffer);
 	strcpy(buffer, format);
 	strcpy(tmpmessage, "");
 	tmpmessage[0] = '\0';
@@ -39,14 +41,25 @@ void loop(void)
 {
 	delay(500);
 	tmpmessage = serial_to_buffer(tmpmessage);
+  //Serial.println(buffer);
 	if(tmpmessage[0] != '\0' && buffer[6] == '0')
 	{
 		strcpy(buffer, format2);
+    //Serial.println("Format buffer");
+    //Serial.println(buffer);
 		strncat(buffer, tmpmessage, 1);
+    //Serial.println(buffer);
 		//target = tmpmessage[0] - '0';
 		strcat(buffer, "#");
-		strcat(buffer, cut(tmpmessage, 1));
+    //Serial.println(buffer);
+    //Serial.println("Message Stored");
+    //Serial.println(tmpmessage);
+    tmpmessage++;
+    //Serial.println(tmpmessage);
+		strcat(buffer, tmpmessage);
+    //Serial.println(buffer);
 		wire_send(2, buffer, 0);
+    //Serial.println(buffer);
 		strcpy(buffer, format);
 		strcpy(tmpmessage, "");
 	}
@@ -62,15 +75,17 @@ void loop(void)
 	delay(500);
 	Wire.requestFrom(3, 90);
 	buffer = wire_to_buffer(buffer);
+  //Serial.println(buffer);
 	if(buffer[6] == '1')
 	{
 		if(buffer[8] == '1')
 		{
 			buffer_to_serial(buffer, 10);
+      gone(buffer);
 			strcpy(buffer, format);
 		}
 	}
-	Serial.println(buffer);
+	//Serial.println(buffer);
 }
 
 
@@ -82,12 +97,19 @@ char *wire_to_buffer(char *str)
 	while(Wire.available())
 	{
 		c = Wire.read();
-		if(c >= '!' && c <= '~')
-		{
-			str[i] = c;
-		}
-		i++;
+    if(c != '\n' && c != '\0')
+    {
+      if(c == '\r')
+        continue;
+      if(c >= 32 && c <= '~')
+        str[i] = c;
+      i++;
+      continue;
+    }
+    else
+      str[i] = '\0';
 	}
+  str[i] = '\0';
 	return (str);
 }
 
@@ -147,17 +169,30 @@ char *serial_to_buffer(char *str)
 
 //---------------------------------------------------------//
 
-char *cut(char *str, int start)
+char *cut(char *str)
 {
 	char *tab;
 
-	i = start;
+	i = 1;
 	int j = 0;
-	while(str[i])
+	while(str[i] != 's')
 	{
 		tab[j] = str[i];
 		j++;
 		i++;
 	}
+  //Serial.println("TAB");
+  //Serial.println(tab);
 	return (tab);
+}
+
+
+void gone(char *str)
+{
+   i = 0;
+   while(i < 90)
+   {
+    str[i] = '\0';
+    i++;
+   }
 }
