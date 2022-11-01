@@ -40,7 +40,7 @@ void  loop(void)
 void  ReceiveEvent(void)
 {
   buffer = wire_to_buffer(buffer);
-  //Serial.println(buffer);
+  Serial.println(buffer);
   if(buffer[6] == '0')
   {
     if(state == 1)
@@ -61,7 +61,7 @@ void  ReceiveEvent(void)
     {
       //Serial.println(buffer);
       buffer_to_serial(buffer, 10);
-      gone(buffer);
+      buffer = gone(buffer);
       strcpy(buffer, format);
       //Serial.println("buffer");
       //Serial.println(buffer);
@@ -74,6 +74,7 @@ void  ReceiveEvent(void)
 
 void  RequestEvent(void)
 {
+  
   if(buffer[5] == '#')
   {
     wire_send(0, buffer, 0);
@@ -95,6 +96,7 @@ void  RequestEvent(void)
 
 char *wire_to_buffer(char *str)
 {
+  str = gone(str);
   i = 0;
   while(Wire.available())
   {
@@ -104,9 +106,7 @@ char *wire_to_buffer(char *str)
       if(c == '\r')
         continue;
       if(c>=32 && c<='~')
-      {
-        str[i] = c;
-      }
+      str[i] = c;
       i++;
       continue;
     }
@@ -186,12 +186,12 @@ char *cut(char *str, int start)
   return (tab);
 }
 
-void gone(char *str)
+char *gone(char *str)
 {
   i = 0;
-  while(i < 90)
-  {
-    str[i] = '\0';
+  while(i<90){
+    str[i]='\0';
     i++;
   }
+  return (str);
 }
