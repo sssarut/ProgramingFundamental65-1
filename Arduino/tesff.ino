@@ -19,6 +19,7 @@ void  setup(void)
   Serial.begin(9600);
   tmpmessage = (char *)malloc(sizeof(char) * 100);
   buffer = (char *)malloc(sizeof(char) * 100);
+  gone(buffer);
   strcpy(buffer, format);
   strcpy(tmpmessage, "");
   tmpmessage[0] = '\0';
@@ -26,7 +27,7 @@ void  setup(void)
 
 void  loop(void)
 {
-  delay(100);  
+  delay(500);  
   if(state == 0 && Serial.available())
   {
     tmpmessage = serial_to_buffer(tmpmessage);
@@ -48,7 +49,8 @@ void  ReceiveEvent(void)
       strncat(buffer, tmpmessage, 1);
       //target = tmpmessage[0] - '0';
       strcat(buffer, "#");
-      strcat(buffer, cut(tmpmessage, 1));
+      tmpmessage++;
+      strcat(buffer, tmpmessage);
       strcpy(tmpmessage, "");
       state = 0;
     }
@@ -59,6 +61,7 @@ void  ReceiveEvent(void)
     {
       //Serial.println(buffer);
       buffer_to_serial(buffer, 10);
+      gone(buffer);
       strcpy(buffer, format);
       //Serial.println("buffer");
       //Serial.println(buffer);
@@ -96,11 +99,19 @@ char *wire_to_buffer(char *str)
   while(Wire.available())
   {
     c = Wire.read();
-    if(c >= 32 && c <= '~')
+    if(c != '\n'&& c != '\0')
     {
-      str[i] = c;
+      if(c == '\r')
+        continue;
+      if(c>=32 && c<='~')
+      {
+        str[i] = c;
+      }
+      i++;
+      continue;
     }
-    i++;
+    else
+      str[i] = '\0';
   }
   str[i] = '\0'; 
   return (str);
@@ -173,4 +184,14 @@ char *cut(char *str, int start)
     i++;
   }
   return (tab);
+}
+
+void gone(char *str)
+{
+  i = 0;
+  while(i < 90)
+  {
+    str[i] = '\0';
+    i++;
+  }
 }

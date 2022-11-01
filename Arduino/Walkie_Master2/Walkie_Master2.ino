@@ -39,7 +39,7 @@ void setup(void)
 
 void loop(void)
 {
-	delay(500);
+	delay(100);
 	tmpmessage = serial_to_buffer(tmpmessage);
   //Serial.println(buffer);
 	if(tmpmessage[0] != '\0' && buffer[6] == '0')
@@ -84,6 +84,12 @@ void loop(void)
       gone(buffer);
 			strcpy(buffer, format);
 		}
+		if(buffer[8] > '3' || buffer[8] < '1')
+		{
+			gone(buffer);
+			strcpy(buffer, format);
+		}
+
 	}
 	//Serial.println(buffer);
 }
