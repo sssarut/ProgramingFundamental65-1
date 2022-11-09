@@ -8,6 +8,7 @@ from support import *
 #from setting import *
 from random import choice
 from weapon import *
+from ui import *
 
 class Level:
     def __init__(self):
@@ -16,6 +17,9 @@ class Level:
         self.obs_spi = pygame.sprite.Group()
         self.create_map()
         self.current_attack = None
+
+        #UI
+        self.ui = UI()
 
     def create_attack(self):
         self.current_attack = Weapon(self.player, [self.vis_spi])
@@ -62,14 +66,19 @@ class Level:
         #            Tile((x,y),[self.vis_spi,self.obs_spi])
         #        if col == 'c':
         #            self.player = Player((x,y),[self.vis_spi], self.obs_spi)
-        self.player = Player((640, 640), [self.vis_spi], self.obs_spi, self.create_attack, self.destroy_attack)
+        self.player = Player((640, 640), [self.vis_spi], self.obs_spi, self.create_attack, self.destroy_attack, self.create_magic)
         self.hitbox = self.player.hitbox
     
+    def create_magic(self, style, strength, cost):
+        print(style)
+        print(strength)
+        print(cost)
     def run(self):
         self.vis_spi.custom_draw(self.player)
         pygame.draw.rect(self.display_surface, (255, 255, 255), self.hitbox, 2)
         self.vis_spi.update()
-        debug(self.player.status)
+        self.ui.display(self.player)
+        #debug(self.player.status)
 
 class YCamGroup(pygame.sprite.Group):
     def __init__(self):
