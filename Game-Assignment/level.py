@@ -14,6 +14,7 @@ from ui import UI
 from upgrade import Upgrade
 from weapon import Weapon
 from menu import Menu
+from name import Name
 
 
 class Level:
@@ -22,12 +23,21 @@ class Level:
 		# get the display surface 
 		self.display_surface = pygame.display.get_surface()
 		self.game_paused = True
-		self.alpha = 0
+		self.alpha = 200
 		self.mode = 'm'
 		self.capture = 0
+		self.text = ''
 		self.fog_timer = 0
-		self.surf = pygame.image.load('../graphics/tilemap/FoW.png')
-		self.surf2 = pygame.image.load('../graphics/tilemap/WoF.png')
+		self.death = False
+		self.surf = pygame.image.load('../graphics/tilemap/FoW.png').convert_alpha()
+		self.surf2 = pygame.image.load('../graphics/tilemap/WoF.png').convert_alpha()
+
+
+		#audio
+		self.battle_sound = pygame.mixer.Sound('../audio/battle.wav')
+		self.menu_sound = pygame.mixer.Sound('../audio/menu.wav')
+		self.score_sound = pygame.mixer.Sound('../audio/score.wav')
+		self.winning_sound = pygame.mixer.Sound('../audio/lobby.wav')
 
 		# sprite group setup
 		self.visible_sprites = YSortCameraGroup()
@@ -41,13 +51,18 @@ class Level:
 		# sprite setup
 		self.create_map()
 		self.fog_state = True
+		self.name = Name()
+		self.end = 0
 
 		# user interface 
 		self.ui = UI()
 		self.menu = Menu()
 		self.max = 8
 		self.upgrade = Upgrade(self.player)
-
+		self.game_end_sound = pygame.mixer.Sound('../audio/death.wav')
+		self.game_end_sound.set_volume(0.8)
+		self.block_sound = pygame.mixer.Sound('../audio/block.wav')
+		self.block_sound.set_volume(0.3)
 		# particles
 		self.animation_player = AnimationPlayer()
 		self.magic_player = MagicPlayer(self.animation_player)
@@ -58,12 +73,10 @@ class Level:
 	def create_map(self):
 		layouts = {
 			'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
-			#'grass': import_csv_layout('../map/map_Grass.csv'),
 			'object': import_csv_layout('../map/map_Objects.csv'),
 			'entities': import_csv_layout('../map/map_Entities.csv')
 		}
 		graphics = {
-			'grass': import_folder('../graphics/Grass'),
 			'objects': import_folder('../graphics/objects')
 		}
 
@@ -75,14 +88,6 @@ class Level:
 						y = row_index * TILESIZE
 						if style == 'boundary':
 							Tile((x,y),[self.obstacle_sprites],'invisible')
-						if style == 'grass':
-							random_grass_image = choice(graphics['grass'])
-							Tile(
-								(x,y),
-								[self.visible_sprites,self.obstacle_sprites,self.attackable_sprites],
-								'grass',
-								random_grass_image)
-
 						if style == 'object':
 							if col == '0':
 								surf = graphics['objects'][int(col)]
@@ -100,7 +105,8 @@ class Level:
 									self.obstacle_sprites,
 									self.create_attack,
 									self.destroy_attack,
-									self.create_magic)
+									self.create_magic,
+									self.battle_sound)
 							else:
 								#if col == '18': monster_name = 'blu_skull'
 								#elif col == '20': monster_name = 'red_skull'
@@ -124,6 +130,8 @@ class Level:
 
 		if style == 'flame':
 			self.magic_player.flame(self.player,cost,[self.visible_sprites,self.attack_sprites])
+		if style == 'block':
+			self.magic_player.block(self.player, 0, 0, [self.visible_sprites])
 
 	def destroy_attack(self):
 		if self.current_attack:
@@ -146,32 +154,74 @@ class Level:
 							target_sprite.get_damage(self.player,attack_sprite.sprite_type)
 
 	def damage_player(self,amount,attack_type):
-		if self.player.vulnerable:
+		
+		if self.player.vulnerable and self.player.blocking:
+			self.player.block_count += 1
+			self.player.vulnerable = False
+			self.player.hurt_time = pygame.time.get_ticks()
+			self.block_sound.play()
+		elif self.player.vulnerable:
 			self.player.health -= amount
 			self.player.vulnerable = False
 			self.player.hurt_time = pygame.time.get_ticks()
 			self.animation_player.create_particles(attack_type,self.player.rect.center,[self.visible_sprites])
+		if self.player.health <= 0:
+			self.death = True
+			self.toggle_name()
 
 	def trigger_death_particles(self,pos,particle_type):
 
 		self.animation_player.create_particles(particle_type,pos,self.visible_sprites)
 		self.enemy -= 1
-		monster_data[particle_type]['health'] += 10
-		monster_data[particle_type]['damage'] += 10 
+		monster_data[particle_type]['health'] += 5
+		monster_data[particle_type]['damage'] += 1.5 
+		monster_data[particle_type]['speed'] += 0.01 
 	def add_exp(self,amount):
 
 		self.player.exp += amount
 
+	def toggle_score(self):
+		self.mode = 's'
+		self.game_paused = True
+		pygame.mixer.stop()
+		self.score_sound.stop()
+		self.score_sound.set_volume(0.2)
+		self.score_sound.play(loops=-1)
 	def toggle_time(self):
 		self.mode = 'n'
+		self.game_paused = False
+		if self.capture == 1:
+			pygame.mixer.stop()
+			self.winning_sound.set_volume(0.1)
+			self.winning_sound.play(loops = -1)
+		elif self.capture == 0:
+			pygame.mixer.stop()
+			self.battle_sound.set_volume(0.1)
+			self.battle_sound.play(loops = -1)
+	def toggle_name(self):
+		self.mode = 't'
 		self.game_paused = not self.game_paused
+		pygame.mixer.stop()
+		self.score_sound.stop()
+		self.score_sound.set_volume(0.2)
+		self.score_sound.play(loops=-1)
+	def	toggle_home(self):
+		self.mode = 'm'
+		self.game_paused = True
+		pygame.mixer.stop()
+		self.menu_sound.set_volume(0.2)
+		self.menu_sound.play(loops=-1)
 	def toggle_upgrade(self):
 		self.mode = 'u'
 		self.game_paused = not self.game_paused 
 	def toggle_menu(self):
-		self.mode = 'm'
-		debug('change')
+		self.mode = 'r'
 		self.game_paused = not self.game_paused 
+		self.battle_sound.set_volume(0)
+		self.menu_sound.set_volume(0.2)
+		self.winning_sound.set_volume(0)
+		self.score_sound.set_volume(0)
+		self.menu_sound.play(loops=-1)
 	
 	def KoTH(self):
 		if self.player.hitbox.centerx >= 1024 and self.player.hitbox.centery >= 1024 and self.player.hitbox.centerx <= 1152 and self.player.hitbox.centery <= 1152 and self.capture == 0:
@@ -188,7 +238,7 @@ class Level:
 	def fog(self):
 		self.fog_timer = pygame.time.get_ticks()
 		if self.alpha <= 255 :
-			self.alpha += 20
+			self.alpha += 10
 			self.surf.set_alpha(self.alpha)
 			self.surf2.set_alpha(self.alpha)
 		rect = self.surf.get_rect(topleft = (0, 0))
@@ -232,7 +282,6 @@ class Level:
 										self.damage_player,
 										self.trigger_death_particles,
 										self.add_exp)
-								else : pass
 
 							
 	def run(self):
@@ -242,14 +291,20 @@ class Level:
 			self.max += 2
 			self.capture = 1
 			self.player.exp += 200
+			self.game_end_sound.play()
+			self.battle_sound.set_volume(0)
+			self.menu_sound.set_volume(0)
+			self.winning_sound.set_volume(0.2)
+			self.score_sound.set_volume(0)
+			self.winning_sound.play(loops=-1)
 		elif self.player.point < 1200:
+			self.winning_sound.set_volume(0)
 			self.capture = 0
 		if self.capture == 0:
 			self.fog()
 			self.spawn()
-		self.ui.display(self.player)
+		self.ui.display(self.player, self)
 		self.KoTH()
-		debug(self.mode)
 		
 		if self.game_paused:
 			if self.mode == 'u':

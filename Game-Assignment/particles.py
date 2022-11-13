@@ -18,6 +18,7 @@ class AnimationPlayer:
             'thunder': import_folder('../graphics/particles/thunder'),
             'Flam': import_folder('../graphics/particles/Flam'),
             'Icey': import_folder('../graphics/particles/Icey'),
+            'block' : import_folder('../graphics/particles/block'),
 
             # monster deaths
             'red_skull': import_folder('../graphics/particles/nova'), 
@@ -39,6 +40,9 @@ class AnimationPlayer:
     def create_particles(self,animation_type,pos,groups):
         animation_frames = self.frames[animation_type]
         ParticleEffect(pos,animation_frames,groups)
+    def create_shield(self,animation_type,player,groups):
+        animation_frames = self.frames[animation_type]
+        BlockEffect(player,animation_frames,groups)
 
 
 class ParticleEffect(pygame.sprite.Sprite):
@@ -57,6 +61,26 @@ class ParticleEffect(pygame.sprite.Sprite):
             self.kill()
         else:
             self.image = self.frames[int(self.frame_index)]
+
+    def update(self):
+        self.animate()
+
+class BlockEffect(pygame.sprite.Sprite):
+    def __init__(self,player,animation_frames,groups):
+        super().__init__(groups)
+        self.sprite_type = 'magic'
+        self.frame_index = 0
+        self.player = player
+        self.animation_speed = 0.15
+        self.frames = animation_frames
+        self.image = self.frames[self.frame_index]
+        self.rect = self.image.get_rect(center = player.rect.center)
+
+    def animate(self):
+        if not self.player.blocking:
+            self.kill()
+        else:
+            self.image = self.frames[0]
 
     def update(self):
         self.animate()

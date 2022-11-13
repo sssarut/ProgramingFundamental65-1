@@ -68,13 +68,13 @@ class UI:
 		self.display_surface.blit(weapon_surf,weapon_rect)
 
 	def magic_overlay(self,magic_index,has_switched):
-		bg_rect = self.selection_box(80,635,has_switched)
+		bg_rect = self.selection_box(10,630,has_switched)
 		magic_surf = self.magic_graphics[magic_index]
 		magic_rect = magic_surf.get_rect(center = bg_rect.center)
 
 		self.display_surface.blit(magic_surf,magic_rect)
 
-	def display(self,player):
+	def display(self,player,level):
 		self.show_bar(player.health,player.stats['health'],self.health_bar_rect,HEALTH_COLOR)
 		self.show_bar(player.energy,player.stats['energy'],self.energy_bar_rect,ENERGY_COLOR)
 		if player.point < 1200:
@@ -82,11 +82,18 @@ class UI:
 		elif player.hitbox.centerx >= 1024 and player.hitbox.centery >= 1024 and player.hitbox.centerx <= 1152 and player.hitbox.centery <= 1152 :
 			win_surf = self.font.render('PRESS N TO GO TO NEXT ROUND',False,TEXT_COLOR)
 			win_rect = win_surf.get_rect(center = self.KoTH_bar_rect.center)
-
 			pygame.draw.rect(self.display_surface,UI_BG_COLOR,win_rect.inflate(20,20))
 			self.display_surface.blit(win_surf,win_rect)
 			pygame.draw.rect(self.display_surface,UI_BORDER_COLOR,win_rect.inflate(20,20),3)
+		if level.capture == 1:
+			up_surf = self.font.render('PRESS U TO GO TO UPGRADE',False,TEXT_COLOR)
+			up_rect = up_surf.get_rect(center = self.KoTH_bar_rect.center)
+			up_rect.y -= 50
+			pygame.draw.rect(self.display_surface,UI_BG_COLOR,up_rect.inflate(20,20))
+			self.display_surface.blit(up_surf,up_rect)
+			pygame.draw.rect(self.display_surface,UI_BORDER_COLOR,up_rect.inflate(20,20),3)
+
 		self.show_exp(player.exp)
 
-		self.weapon_overlay(player.weapon_index,not player.can_switch_weapon)
+		#self.weapon_overlay(player.weapon_index,not player.can_switch_weapon)
 		self.magic_overlay(player.magic_index,not player.can_switch_magic)

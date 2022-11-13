@@ -1,0 +1,1 @@
+{"test": 1, "pain": 500, "god": 1, "beg": 1, "time": 1, "same": 1, "right": 1, "left": 1, "help": 1, "Hello There": 7000000000, "Test": 1500000000, "Daanish is SALTED": 6500000000, "a": 1150, "Dead LOL": 80, "EEEEEEEEEEEEEEEEE": 215, "Lol": 0, "Lmao": 410, "d": 2100, "No": 115, "lol": 2500, "we": 355, "RIP": 499993286.54080003, " Lol": 490, "LS": 1900, "Looooool": 2000}

@@ -11,9 +11,11 @@ class Upgrade:
 		self.attribute_names = list(player.stats.keys())
 		self.max_values = list(player.max_stats.values())
 		self.font = pygame.font.Font(UI_FONT, UI_FONT_SIZE)
+		self.bg = pygame.image.load('../graphics/tilemap/Score.png')
+		self.bg_rect = self.bg.get_rect(topleft = (0, 0))
 
 		# item creation
-		self.height = self.display_surface.get_size()[1] * 0.8
+		self.height = self.display_surface.get_size()[1] * 0.4
 		self.width = self.display_surface.get_size()[0] // 6
 		self.create_items()
 
@@ -66,6 +68,9 @@ class Upgrade:
 		self.input()
 		self.selection_cooldown()
 
+
+		pygame.draw.rect(self.display_surface, UI_BG_COLOR, self.bg_rect)
+		self.display_surface.blit(self.bg, self.bg_rect)
 		for index, item in enumerate(self.item_list):
 
 			# get attributes
@@ -117,7 +122,7 @@ class Item:
 
 		if player.exp >= player.upgrade_cost[upgrade_attribute] and player.stats[upgrade_attribute] < player.max_stats[upgrade_attribute]:
 			player.exp -= player.upgrade_cost[upgrade_attribute]
-			player.stats[upgrade_attribute] *= 1.2
+			player.stats[upgrade_attribute] += player.max_stats[upgrade_attribute] // 10
 			player.upgrade_cost[upgrade_attribute] *= 1.4
 
 		if player.stats[upgrade_attribute] > player.max_stats[upgrade_attribute]:
@@ -130,6 +135,6 @@ class Item:
 		else:
 			pygame.draw.rect(surface,UI_BG_COLOR,self.rect)
 			pygame.draw.rect(surface,UI_BORDER_COLOR,self.rect,4)
-	
+
 		self.display_names(surface,name,cost,self.index == selection_num)
-		self.display_bar(surface,value,max_value,self.index == selection_num)
+		#self.display_bar(surface,value,max_value,self.index == selection_num)
