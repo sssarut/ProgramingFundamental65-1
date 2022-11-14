@@ -52,7 +52,7 @@ class Game:
 			if self.menu.highscore == True:
 				self.level.toggle_score()
 			if self.level.mode == 'u':
-				self.level.upgrade()
+				self.level.upgrade.display()
 			if self.menu.start == True:
 				self.level.game_paused = False
 				self.level.toggle_time()
@@ -81,7 +81,7 @@ class Game:
 					#elif event.key == pygame.K_h and self.level.mode == 'm' :
 						#self.level.toggle_score()
 					elif event.key == pygame.K_l:
-						if self.level.mode == 'r':
+						if self.level.mode == 'r' or self.level.mode == 'u':
 							self.level.toggle_time()
 						elif self.level.mode == 's':
 							self.level.toggle_home()
