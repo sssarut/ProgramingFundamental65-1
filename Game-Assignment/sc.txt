@@ -1,1 +1,1 @@
-{"god": 10000000}
+{"god": 10000000, "Hello There": 1700, "pop": 2250, "Yep": 2250, "Hello": 1555.44, "KK": 2360.0, "Lmao": 2560.52736, "Lol": 2950, "loll": 50, "Kasld[pokdfokds": 20100}

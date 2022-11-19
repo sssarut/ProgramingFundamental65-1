@@ -14,6 +14,7 @@ from ui import UI
 from upgrade import Upgrade
 from weapon import Weapon
 from menu import Menu
+from item import Item
 from name import Name
 
 
@@ -53,6 +54,7 @@ class Level:
 		self.fog_state = True
 		self.name = Name()
 		self.end = 0
+		self.current_reward = None
 
 		# user interface 
 		self.ui = UI()
@@ -124,6 +126,14 @@ class Level:
 		
 		self.current_attack = Weapon(self.player,[self.visible_sprites,self.attack_sprites])
 
+	def create_reward(self):
+		self.current_reward = Item([self.visible_sprites])
+	
+	def destroy_reward(self):
+		if self.current_reward:
+			self.current_reward.kill()
+		self.current_reward = None
+	
 	def create_magic(self,style,strength,cost):
 		if style == 'heal':
 			self.magic_player.heal(self.player,strength,cost,[self.visible_sprites])
@@ -290,6 +300,7 @@ class Level:
 		if self.player.point >= 1200 and self.capture == 0:
 			self.max += 2
 			self.capture = 1
+			self.create_reward()
 			self.player.exp += 200
 			self.game_end_sound.play()
 			self.battle_sound.set_volume(0)
@@ -298,6 +309,8 @@ class Level:
 			self.score_sound.set_volume(0)
 			self.winning_sound.play(loops=-1)
 		elif self.player.point < 1200:
+			if self.capture == 1:
+				self.destroy_reward()
 			self.winning_sound.set_volume(0)
 			self.capture = 0
 		if self.capture == 0:
