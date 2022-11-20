@@ -4,25 +4,21 @@ from settings import *
 class UI:
 	def __init__(self):
 		
-		# general 
 		self.display_surface = pygame.display.get_surface()
 		self.font = pygame.font.Font(UI_FONT,UI_FONT_SIZE)
 
-		# bar setup 
 		self.health_bar_rect = pygame.Rect(10,10,HEALTH_BAR_WIDTH,BAR_HEIGHT)
 		self.energy_bar_rect = pygame.Rect(10,34,ENERGY_BAR_WIDTH,BAR_HEIGHT)
 		self.KoTH_bar_rect = pygame.Rect(200, 600, 880, 40)
 		self.bar_image = pygame.image.load('../graphics/tilemap/Border.png')
 		self.bar_rect = self.bar_image.get_rect(center = self.health_bar_rect.center)
 
-		# convert weapon dictionary
 		self.weapon_graphics = []
 		for weapon in weapon_data.values():
 			path = weapon['graphic']
 			weapon = pygame.image.load(path).convert_alpha()
 			self.weapon_graphics.append(weapon)
 
-		# convert magic dictionary
 		self.magic_graphics = []
 		for magic in magic_data.values():
 			magic = pygame.image.load(magic['graphic']).convert_alpha()
@@ -30,16 +26,13 @@ class UI:
 
 
 	def show_bar(self,current,max_amount,bg_rect,color):
-		# draw bg 
 		pygame.draw.rect(self.display_surface,UI_BG_COLOR,bg_rect)
 
-		# converting stat to pixel
 		ratio = current / max_amount
 		current_width = bg_rect.width * ratio
 		current_rect = bg_rect.copy()
 		current_rect.width = current_width
 
-		# drawing the bar
 		pygame.draw.rect(self.display_surface,color,current_rect)
 		pygame.draw.rect(self.display_surface,UI_BORDER_COLOR,bg_rect,3)
 
@@ -97,5 +90,4 @@ class UI:
 
 		self.show_exp(player.exp)
 
-		#self.weapon_overlay(player.weapon_index,not player.can_switch_weapon)
 		self.magic_overlay(player.magic_index,not player.can_switch_magic)

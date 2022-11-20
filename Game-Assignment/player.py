@@ -15,19 +15,16 @@ class Player(Entity):
 		self.warpsound = pygame.mixer.Sound('../audio/tp.wav')
 		self.warpsound.set_volume(0.2)
 
-		# graphics setup
 		self.import_player_assets()
 		self.status = 'right'
 		self.last_status = 'right'
 
-		# movement 
 		self.attacking = False
 		self.casting = False
 		self.attack_cooldown = 400
 		self.attack_time = None
 		self.obstacle_sprites = obstacle_sprites
 
-		# weapon
 		self.create_attack = create_attack
 		self.destroy_attack = destroy_attack
 		self.weapon_index = 0
@@ -36,16 +33,14 @@ class Player(Entity):
 		self.weapon_switch_time = None
 		self.switch_duration_cooldown = 200
 
-		# magic 
 		self.create_magic = create_magic
 		self.magic_index = 0
 		self.magic = list(magic_data.keys())[self.magic_index]
 		self.can_switch_magic = True
 		self.magic_switch_time = None
 
-		# stats
-		self.stats = {'health': 800,'energy':50,'attack': 50,'magic': 50,'speed': 5}
-		self.max_stats = {'health': 8000, 'energy': 500, 'attack': 500, 'magic' : 500, 'speed': 50}
+		self.stats = {'health': 800,'energy':50,'attack': 50,'magic': 10,'speed': 5}
+		self.max_stats = {'health': 8000, 'energy': 500, 'attack': 500, 'magic' : 100, 'speed': 50}
 		self.upgrade_cost = {'health': 100, 'energy': 100, 'attack': 100, 'magic' : 100, 'speed': 100}
 		self.health = self.stats['health']
 		self.energy = self.stats['energy']
@@ -59,7 +54,6 @@ class Player(Entity):
 		self.speed = self.stats['speed']
 		self.point = 0
 
-		# damage timer
 		self.vulnerable = True
 		self.hurt_time = None
 		self.invulnerability_duration = 1000
@@ -113,8 +107,6 @@ class Player(Entity):
 				self.warpsound.play()
 				self.can_tp = False
 
-			if keys[pygame.K_p] :
-				self.point += 200
 			if self.blocking and ((not keys[pygame.K_f]) or self.block_count >= 6):
 				self.blocking = False
 				self.frame_index = 0
@@ -158,18 +150,6 @@ class Player(Entity):
 					self.create_magic('block', 0, 0)
 				self.blocking = True
 				self.block_time = pygame.time.get_ticks()
-			"""
-			if keys[pygame.K_q] and self.can_switch_weapon:
-				self.can_switch_weapon = False
-				self.weapon_switch_time = pygame.time.get_ticks()
-				
-				if self.weapon_index < len(list(weapon_data.keys())) - 1:
-					self.weapon_index += 1
-				else:
-					self.weapon_index = 0
-					
-				self.weapon = list(weapon_data.keys())[self.weapon_index]
-			"""
 			if keys[pygame.K_e] and self.can_switch_magic:
 				self.can_switch_magic = False
 				self.magic_switch_time = pygame.time.get_ticks()

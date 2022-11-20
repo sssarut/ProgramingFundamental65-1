@@ -37,7 +37,6 @@ class Menu:
             if pygame.mouse.get_pressed()[0] == 1 and self.highscore == False:
                 self.highscore = True
                 self.display_surface.blit(self.image, self.rect)
-                #self.name.show_score()
         elif self.exit_rect.collidepoint(pos):
             if pygame.mouse.get_pressed()[0] == 1 and self.exit == False:
                 self.exit = True
@@ -47,12 +46,9 @@ class Menu:
             self.exit = False
         pygame.draw.rect(self.display_surface, UI_BG_COLOR, self.start_rect.inflate(20, 20))
         self.display_surface.blit(self.start_surf, self.start_rect)
-        #pygame.draw.rect(self.display_surface, UI_BORDER_COLOR, self.start_rect.inflate(20, 20))
 
         pygame.draw.rect(self.display_surface, UI_BG_COLOR, self.score_rect.inflate(20, 20))
         self.display_surface.blit(self.score_surf, self.score_rect)
-        #pygame.draw.rect(self.display_surface, UI_BORDER_COLOR, self.score_rect.inflate(20, 20))
 
         pygame.draw.rect(self.display_surface, UI_BG_COLOR, self.exit_rect.inflate(20, 20))
         self.display_surface.blit(self.exit_surf, self.exit_rect)
-        #pygame.draw.rect(self.display_surface, UI_BORDER_COLOR, self.exit_rect.inflate(20, 20))

@@ -65,7 +65,6 @@ class Game:
 				self.level.game_paused = True
 				self.screen.blit(self.image2, self.rect)
 				self.name.show_score(scoreboard)
-				#scoreboard = self.name.sorted_dict
 
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT or self.menu.exit == True:
@@ -73,14 +72,11 @@ class Game:
 						json.dump(scoreboard,score_file)
 					pygame.quit()
 					sys.exit()
-				#Use menu or other GUI
 				if event.type == pygame.KEYDOWN and self.level.mode != 't':
 					if event.key == pygame.K_u and self.level.mode == 'n' and self.level.capture == 1:
 						self.level.toggle_upgrade()
 					if event.key == pygame.K_m and self.level.mode == 'n':
 						self.level.toggle_menu()
-					#elif event.key == pygame.K_h and self.level.mode == 'm' :
-						#self.level.toggle_score()
 					elif event.key == pygame.K_l:
 						if self.level.mode == 'r' or self.level.mode == 'u':
 							self.level.toggle_time()

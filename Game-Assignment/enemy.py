@@ -7,21 +7,17 @@ from random import randint
 class Enemy(Entity):
 	def __init__(self,monster_name,pos,groups,obstacle_sprites,damage_player,trigger_death_particles,add_exp):
 
-		# general setup
 		super().__init__(groups)
 		self.sprite_type = 'enemy'
 
-		# graphics setup
 		self.import_graphics(monster_name)
 		self.status = 'idle'
 		self.image = self.animations[self.status][self.frame_index]
 
-		# movement
 		self.rect = self.image.get_rect(topleft = pos)
 		self.hitbox = self.rect.inflate(0,-10)
 		self.obstacle_sprites = obstacle_sprites
 
-		# stats
 		self.monster_name = monster_name
 		self.monster_info = monster_data[self.monster_name]
 		self.health = self.monster_info['health']
@@ -33,7 +29,6 @@ class Enemy(Entity):
 		self.notice_radius = self.monster_info['notice_radius']
 		self.attack_type = self.monster_info['attack_type']
 
-		# player interaction
 		self.can_attack = True
 		self.attack_time = None
 		self.attack_cooldown = 1000
@@ -43,12 +38,10 @@ class Enemy(Entity):
 
 		self.end = 0
 
-		# invincibility timer
 		self.vulnerable = True
 		self.hit_time = None
 		self.invincibility_duration = 300
 
-		# sounds
 		self.death_sound = pygame.mixer.Sound('../audio/death.wav')
 		self.hit_sound = pygame.mixer.Sound('../audio/hit.wav')
 		self.attack_sound = pygame.mixer.Sound(self.monster_info['attack_sound'])

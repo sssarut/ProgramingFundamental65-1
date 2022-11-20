@@ -22,7 +22,6 @@ from name import Name
 class Level:
 	def __init__(self):
 
-		# get the display surface 
 		self.display_surface = pygame.display.get_surface()
 		self.game_paused = True
 		self.alpha = 200
@@ -35,17 +34,14 @@ class Level:
 		self.surf2 = pygame.image.load('../graphics/tilemap/WoF.png').convert_alpha()
 
 
-		#audio
 		self.battle_sound = pygame.mixer.Sound('../audio/battle.wav')
 		self.menu_sound = pygame.mixer.Sound('../audio/menu.wav')
 		self.score_sound = pygame.mixer.Sound('../audio/score.wav')
 		self.winning_sound = pygame.mixer.Sound('../audio/lobby.wav')
 
-		# sprite group setup
 		self.visible_sprites = YSortCameraGroup()
 		self.obstacle_sprites = pygame.sprite.Group()
 
-		# attack sprites
 		self.current_attack = None
 		self.current_area = None
 		self.player_sprites = pygame.sprite.Group()
@@ -54,14 +50,12 @@ class Level:
 		self.area_sprites = pygame.sprite.Group()
 		self.attackable_sprites = pygame.sprite.Group()
 
-		# sprite setup
 		self.create_map()
 		self.fog_state = True
 		self.name = Name()
 		self.end = 0
 		self.current_reward = None
 
-		# user interface 
 		self.ui = UI()
 		self.menu = Menu()
 		self.max = 8
@@ -72,7 +66,6 @@ class Level:
 		self.stun_sound = pygame.mixer.Sound('../audio/Stun.wav')
 		self.buff_sound = pygame.mixer.Sound('../audio/End.wav')
 		self.block_sound.set_volume(0.3)
-		# particles
 		self.animation_player = AnimationPlayer()
 		self.magic_player = MagicPlayer(self.animation_player)
 
@@ -387,28 +380,23 @@ class Level:
 class YSortCameraGroup(pygame.sprite.Group):
 	def __init__(self):
 
-		# general setup 
 		super().__init__()
 		self.display_surface = pygame.display.get_surface()
 		self.half_width = self.display_surface.get_size()[0] // 2
 		self.half_height = self.display_surface.get_size()[1] // 2
 		self.offset = pygame.math.Vector2()
 
-		# creating the floor
 		self.floor_surf = pygame.image.load('../graphics/tilemap/ground.png').convert()
 		self.floor_rect = self.floor_surf.get_rect(topleft = (0,0))
 
 	def custom_draw(self,player):
 
-		# getting the offset 
 		self.offset.x = player.rect.centerx - self.half_width
 		self.offset.y = player.rect.centery - self.half_height
 
-		# drawing the floor
 		floor_offset_pos = self.floor_rect.topleft - self.offset
 		self.display_surface.blit(self.floor_surf,floor_offset_pos)
 
-		# for sprite in self.sprites():
 		for sprite in sorted(self.sprites(),key = lambda sprite: sprite.rect.centery):
 			offset_pos = sprite.rect.topleft - self.offset
 			self.display_surface.blit(sprite.image,offset_pos)
