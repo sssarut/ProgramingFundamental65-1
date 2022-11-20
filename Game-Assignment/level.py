@@ -15,6 +15,7 @@ from upgrade import Upgrade
 from weapon import Weapon
 from menu import Menu
 from item import Item
+from area import Area
 from name import Name
 
 
@@ -46,7 +47,11 @@ class Level:
 
 		# attack sprites
 		self.current_attack = None
+		self.current_area = None
+		self.player_sprites = pygame.sprite.Group()
 		self.attack_sprites = pygame.sprite.Group()
+		self.item_sprites = pygame.sprite.Group()
+		self.area_sprites = pygame.sprite.Group()
 		self.attackable_sprites = pygame.sprite.Group()
 
 		# sprite setup
@@ -64,6 +69,8 @@ class Level:
 		self.game_end_sound = pygame.mixer.Sound('../audio/death.wav')
 		self.game_end_sound.set_volume(0.8)
 		self.block_sound = pygame.mixer.Sound('../audio/block.wav')
+		self.stun_sound = pygame.mixer.Sound('../audio/Stun.wav')
+		self.buff_sound = pygame.mixer.Sound('../audio/End.wav')
 		self.block_sound.set_volume(0.3)
 		# particles
 		self.animation_player = AnimationPlayer()
@@ -103,7 +110,7 @@ class Level:
 							if col == '394':
 								self.player = Player(
 									(x,y),
-									[self.visible_sprites],
+									[self.visible_sprites, self.player_sprites],
 									self.obstacle_sprites,
 									self.create_attack,
 									self.destroy_attack,
@@ -122,12 +129,15 @@ class Level:
 								#	self.add_exp)
 								pass
 
+	def create_area(self):
+		self.current_area = Area([self.area_sprites], '../graphics/particles/Skill_Lightning/Area.png', self.player.rect.center)
+	
 	def create_attack(self):
 		
 		self.current_attack = Weapon(self.player,[self.visible_sprites,self.attack_sprites])
 
 	def create_reward(self):
-		self.current_reward = Item([self.visible_sprites])
+		self.current_reward = Item([self.visible_sprites, self.item_sprites])
 	
 	def destroy_reward(self):
 		if self.current_reward:
@@ -142,6 +152,30 @@ class Level:
 			self.magic_player.flame(self.player,cost,[self.visible_sprites,self.attack_sprites])
 		if style == 'block':
 			self.magic_player.block(self.player, 0, 0, [self.visible_sprites])
+		if style == 'Skill_Lightning':
+			self.create_area()
+			detected_sprites = pygame.sprite.spritecollide(self.current_area, self.attackable_sprites, False)
+			if detected_sprites:
+				for target in detected_sprites:
+					target.health -= strength
+					self.magic_player.Lightning(self.player , target.rect.center, cost, [self.visible_sprites], detected_sprites)
+			else:
+				self.current_area.kill()
+				self.current_area = None
+		if style == 'Skill_Laser' :
+			self.magic_player.Skill_Laser(self.player, cost, [self.attack_sprites, self.visible_sprites])
+		if style == 'Skill_Stun' :
+			self.create_area()
+			self.stun_sound.play()
+			detected_sprites = pygame.sprite.spritecollide(self.current_area, self.attackable_sprites, False)
+			if detected_sprites:
+				for target in detected_sprites:
+					target.hit_time = pygame.time.get_ticks()
+					target.speed *= 10
+					target.vulnerable = False
+			else:
+				self.current_area.kill()
+				self.current_area = None
 
 	def destroy_attack(self):
 		if self.current_attack:
@@ -163,6 +197,21 @@ class Level:
 						else:
 							target_sprite.get_damage(self.player,attack_sprite.sprite_type)
 
+	def pickup_logic(self):
+		if self.item_sprites and self.player.picking:
+			target_sprite = pygame.sprite.collide_rect(self.current_reward,self.player)
+			if target_sprite:
+				if 'Skill' in self.current_reward.sprite_type :
+					magic_data.pop(self.player.magic)
+					magic_data[self.current_reward.sprite_type] = magic_storage[self.current_reward.sprite_type]
+					self.ui.magic_graphics = []
+					for magic in magic_data.values():
+						magic = pygame.image.load(magic['graphic']).convert_alpha()
+						self.ui.magic_graphics.append(magic)
+				if 'Card' in self.current_reward.sprite_type :
+					pass
+			self.destroy_reward()
+	
 	def damage_player(self,amount,attack_type):
 		
 		if self.player.vulnerable and self.player.blocking:
@@ -174,14 +223,14 @@ class Level:
 			self.player.health -= amount
 			self.player.vulnerable = False
 			self.player.hurt_time = pygame.time.get_ticks()
-			self.animation_player.create_particles(attack_type,self.player.rect.center,[self.visible_sprites])
+			self.animation_player.create_particles(attack_type,self.player.rect.center,[self.visible_sprites], 'center')
 		if self.player.health <= 0:
 			self.death = True
 			self.toggle_name()
 
 	def trigger_death_particles(self,pos,particle_type):
 
-		self.animation_player.create_particles(particle_type,pos,self.visible_sprites)
+		self.animation_player.create_particles(particle_type,pos,self.visible_sprites, 'center')
 		self.enemy -= 1
 		monster_data[particle_type]['health'] += 5
 		monster_data[particle_type]['damage'] += 1.5 
@@ -300,8 +349,12 @@ class Level:
 		if self.player.point >= 1200 and self.capture == 0:
 			self.max += 2
 			self.capture = 1
-			self.create_reward()
-			self.player.exp += 200
+			self.buff_sound.play()
+			self.player.health = self.player.stats['health']
+			if randint(0, 100) <= 10:
+				self.create_reward()
+			else :
+				self.player.exp += 2000
 			self.game_end_sound.play()
 			self.battle_sound.set_volume(0)
 			self.menu_sound.set_volume(0)
@@ -328,6 +381,7 @@ class Level:
 			self.visible_sprites.update()
 			self.visible_sprites.enemy_update(self.player)
 			self.player_attack_logic()
+			self.pickup_logic()
 		
 
 class YSortCameraGroup(pygame.sprite.Group):

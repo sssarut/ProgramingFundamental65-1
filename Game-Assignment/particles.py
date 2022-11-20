@@ -19,6 +19,8 @@ class AnimationPlayer:
             'Flam': import_folder('../graphics/particles/Flam'),
             'Icey': import_folder('../graphics/particles/Icey'),
             'block' : import_folder('../graphics/particles/block'),
+            'Skill_Lightning' : import_folder('../graphics/particles/Skill_Lightning/frames'),
+            'Skill_Laser' : import_folder('../graphics/particles/Skill_Laser/frames'),
 
             # monster deaths
             'red_skull': import_folder('../graphics/particles/nova'), 
@@ -35,25 +37,32 @@ class AnimationPlayer:
 
     def create_grass_particles(self,pos,groups):
          animation_frames = choice(self.frames['leaf'])
-         ParticleEffect(pos,animation_frames,groups)
+         ParticleEffect(pos,animation_frames,groups, 'center')
 
-    def create_particles(self,animation_type,pos,groups):
+    def create_particles(self,animation_type,pos,groups, where):
         animation_frames = self.frames[animation_type]
-        ParticleEffect(pos,animation_frames,groups)
+        ParticleEffect(pos,animation_frames,groups, where)
     def create_shield(self,animation_type,player,groups):
         animation_frames = self.frames[animation_type]
         BlockEffect(player,animation_frames,groups)
 
 
 class ParticleEffect(pygame.sprite.Sprite):
-    def __init__(self,pos,animation_frames,groups):
+    def __init__(self,pos,animation_frames,groups, where):
         super().__init__(groups)
         self.sprite_type = 'magic'
         self.frame_index = 0
         self.animation_speed = 0.15
         self.frames = animation_frames
         self.image = self.frames[self.frame_index]
-        self.rect = self.image.get_rect(center = pos)
+        if where == 'center':
+            self.rect = self.image.get_rect(center = pos)
+        elif where == 'down':
+            self.rect = self.image.get_rect(midbottom = pos)
+        elif where == 'right':
+            self.rect = self.image.get_rect(midright = pos)
+        elif where == 'left':
+            self.rect = self.image.get_rect(midleft = pos)
 
     def animate(self):
         self.frame_index += self.animation_speed

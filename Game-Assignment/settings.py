@@ -50,7 +50,16 @@ magic_data = {
 	'flame': {'strength': 5,'cost': 20,'graphic':'../graphics/particles/flame/fire.png'},
 	'heal' : {'strength': 20,'cost': 10,'graphic':'../graphics/particles/heal/heal.png'}}
 
+magic_storage = {
+	'flame': {'strength': 5,'cost': 20,'graphic':'../graphics/particles/flame/fire.png'},
+	'heal' : {'strength': 20,'cost': 10,'graphic':'../graphics/particles/heal/heal.png'},
+	'Skill_Lightning' : {'strength' : 35, 'cost' : 40, 'graphic' : '../graphics/particles/Skill_Lightning/Full.png'},
+	'Skill_Burst' : {'strength' : 30, 'cost' : 20, 'graphic' : '../graphics/particles/Skill_Burst/Full.png'},
+	'Skill_Stun' : {'strength' : 0, 'cost' : 10, 'graphic' : '../graphics/particles/Skill_Stun/Full.png'},
+	'Skill_Laser' : {'strength' : 40, 'cost' : 50, 'graphic' : '../graphics/particles/Skill_Laser/Full.png'}
+	}
+
 # enemy
 monster_data = {
-	'red_skull': {'health': 150,'exp':50,'damage':25,'attack_type': 'Flam', 'attack_sound':'../audio/attack/fire.wav', 'speed': 3, 'resistance': 1, 'attack_radius': 15, 'notice_radius': 10000},
-	'blu_skull': {'health': 150,'exp':50,'damage':15,'attack_type': 'Icey', 'attack_sound':'../audio/attack/ice.wav', 'speed': 4, 'resistance': 10, 'attack_radius': 15, 'notice_radius': 10000}}
+	'red_skull': {'health': 150,'exp':50,'damage':25,'attack_type': 'Flam', 'attack_sound':'../audio/attack/fire.wav', 'speed': 3, 'resistance': 2, 'attack_radius': 15, 'notice_radius': 10000},
+	'blu_skull': {'health': 150,'exp':50,'damage':15,'attack_type': 'Icey', 'attack_sound':'../audio/attack/ice.wav', 'speed': 4, 'resistance': 2, 'attack_radius': 15, 'notice_radius': 10000}}

@@ -68,6 +68,8 @@ class Player(Entity):
 		self.can_cast = True
 		self.block_time = pygame.time.get_ticks()
 
+		self.picking = False
+
 
 		# import a sound
 		self.weapon_attack_sound = pygame.mixer.Sound('../audio/sword.wav')
@@ -128,7 +130,7 @@ class Player(Entity):
 				self.direction.x = 0
 
 			# attack input 
-			if keys[pygame.K_n] and self.hitbox.centerx >= 1024 and self.hitbox.centery >= 1024 and self.hitbox.centerx <= 1152 and self.hitbox.centery <= 1152 and self.point >= 1200:
+			if keys[pygame.K_SPACE] and self.hitbox.centerx >= 1024 and self.hitbox.centery >= 1024 and self.hitbox.centerx <= 1152 and self.hitbox.centery <= 1152 and self.point >= 1200:
 				self.point = 0
 				pygame.mixer.stop()
 				self.battle_sound.set_volume(0.1)
@@ -145,10 +147,10 @@ class Player(Entity):
 			if keys[pygame.K_LCTRL] and not self.attacking and not self.casting and not self.tping and self.can_cast and not self.blocking:
 				self.casting = True
 				self.cast_time = pygame.time.get_ticks()
-				style = list(magic_data.keys())[self.magic_index]
+				self.style = list(magic_data.keys())[self.magic_index]
 				strength = list(magic_data.values())[self.magic_index]['strength'] + self.stats['magic']
 				cost = list(magic_data.values())[self.magic_index]['cost']
-				self.create_magic(style,strength,cost)
+				self.create_magic(self.style,strength,cost)
 				self.frame_index = 0
 				self.can_cast = False
 			if keys[pygame.K_f] and not self.attacking and not self.casting and not self.tping and self.block_count <= 5:
@@ -178,6 +180,11 @@ class Player(Entity):
 					self.magic_index = 0
 
 				self.magic = list(magic_data.keys())[self.magic_index]
+
+			if keys[pygame.K_x]:
+				self.picking = True
+			else :
+				self.picking = False
 
 	def get_status(self):
 

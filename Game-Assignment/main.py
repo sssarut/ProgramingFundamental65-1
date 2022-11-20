@@ -31,6 +31,7 @@ class Game:
 		self.image = pygame.image.load('../graphics/tilemap/Screen.png')
 		self.image2 = pygame.image.load('../graphics/tilemap/Score.png')
 		self.image3 = pygame.image.load('../graphics/tilemap/Wait.png')
+		self.image4 = pygame.image.load('../graphics/tilemap/Text.png')
 		self.font = pygame.font.Font(UI_FONT, 10)
 		self.rect = self.image.get_rect(topleft = (0,0))
 		main_sound = pygame.mixer.Sound('../audio/menu.wav')
@@ -58,7 +59,7 @@ class Game:
 				self.level.toggle_time()
 			if self.level.mode == 't':
 				self.level.game_paused = True
-				self.screen.blit(self.image2, self.rect)
+				self.screen.blit(self.image4, self.rect)
 				self.name.text_input(self.level, scoreboard)
 			if self.level.mode == 's':
 				self.level.game_paused = True

@@ -12,6 +12,8 @@ class UI:
 		self.health_bar_rect = pygame.Rect(10,10,HEALTH_BAR_WIDTH,BAR_HEIGHT)
 		self.energy_bar_rect = pygame.Rect(10,34,ENERGY_BAR_WIDTH,BAR_HEIGHT)
 		self.KoTH_bar_rect = pygame.Rect(200, 600, 880, 40)
+		self.bar_image = pygame.image.load('../graphics/tilemap/Border.png')
+		self.bar_rect = self.bar_image.get_rect(center = self.health_bar_rect.center)
 
 		# convert weapon dictionary
 		self.weapon_graphics = []
@@ -80,7 +82,7 @@ class UI:
 		if player.point < 1200:
 			self.show_bar(player.point, 1200, self.KoTH_bar_rect, 'gold')
 		elif player.hitbox.centerx >= 1024 and player.hitbox.centery >= 1024 and player.hitbox.centerx <= 1152 and player.hitbox.centery <= 1152 :
-			win_surf = self.font.render('PRESS N TO GO TO NEXT ROUND',False,TEXT_COLOR)
+			win_surf = self.font.render('PRESS SPACE TO GO TO NEXT ROUND',False,TEXT_COLOR)
 			win_rect = win_surf.get_rect(center = self.KoTH_bar_rect.center)
 			pygame.draw.rect(self.display_surface,UI_BG_COLOR,win_rect.inflate(20,20))
 			self.display_surface.blit(win_surf,win_rect)

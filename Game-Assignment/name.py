@@ -24,16 +24,16 @@ class Name:
                         self.text = self.text[:-1]
                     elif event.key == pygame.K_RETURN:
                         scoreboard[self.text] = level.player.exp
+                        self.text = ''
                         level.toggle_home()
                         level.end = 1
 
                     else :
                         self.text += event.unicode
             self.name_surf = self.font.render(self.text, False, 'gold')
-            self.name_rect = self.name_surf.get_rect(center = ((1280 // 2), 100 + self.offset))
+            self.name_rect = self.name_surf.get_rect(center = ((1280 // 2), 100 + self.offset + 150))
             pygame.draw.rect(self.display_surf, UI_BG_COLOR, self.name_rect.inflate(20, 20))
             self.display_surf.blit(self.name_surf, self.name_rect)
-        debug(self.text)
 
     def show_score (self, scoreboard):
 
