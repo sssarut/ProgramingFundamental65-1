@@ -39,8 +39,8 @@ class Player(Entity):
 		self.can_switch_magic = True
 		self.magic_switch_time = None
 
-		self.stats = {'health': 800,'energy':50,'attack': 50,'magic': 10,'speed': 5}
-		self.max_stats = {'health': 8000, 'energy': 500, 'attack': 500, 'magic' : 100, 'speed': 50}
+		self.stats = {'health': 1500,'energy':250,'attack': 50,'magic': 10,'speed': 5}
+		self.max_stats = {'health': 15000, 'energy': 2500, 'attack': 500, 'magic' : 100, 'speed': 50}
 		self.upgrade_cost = {'health': 100, 'energy': 100, 'attack': 100, 'magic' : 100, 'speed': 100}
 		self.health = self.stats['health']
 		self.energy = self.stats['energy']
@@ -56,7 +56,7 @@ class Player(Entity):
 
 		self.vulnerable = True
 		self.hurt_time = None
-		self.invulnerability_duration = 1000
+		self.invulnerability_duration = 700
 		self.can_tp = True
 		self.can_atk = True
 		self.can_cast = True
@@ -106,6 +106,8 @@ class Player(Entity):
 				self.frame_index = 0
 				self.warpsound.play()
 				self.can_tp = False
+			if keys[pygame.K_p] :
+				self.point += 200
 
 			if self.blocking and ((not keys[pygame.K_f]) or self.block_count >= 6):
 				self.blocking = False
@@ -320,7 +322,7 @@ class Player(Entity):
 
 	def energy_recovery(self):
 		if self.energy < self.stats['energy']:
-			self.energy += 0.01 * self.stats['magic']
+			self.energy += 0.1 * self.stats['magic']
 		else:
 			self.energy = self.stats['energy']
 

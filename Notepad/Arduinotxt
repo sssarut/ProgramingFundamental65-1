@@ -1,0 +1,30 @@
+- Switch 
+    - 1st Side : 5V(Defualt : 0) or Ground(Defualt : 1)
+    - 2nd Side : Pin and Resistor (Link to 5V or Ground)
+
+- LED
+    - 1st Side : Ground
+    - 2nd Side : Resistor, Pin
+
+
+- Software
+    - digitalRead(PIN)
+    - digitalWrite(PIN, STATE)
+    - pinMode(PIN, MODE)
+    - millis()
+    - Serial.begin(9600)
+    - Serial.print(Text, Variable)
+    - Serial.println(Text, Variable)
+    - typedef vartype Name TypeName
+    - Struct.keys
+    - delay(Time)
+    - attachInterrupt(digitalPinToInterrupt(PIN 2 , 3), FUNCTION, MODE)
+        - MODE 
+            - LOW 
+            - CHANGE
+            - RISING
+            - FALLING
+            - HIGH
+    - EEPROM.read(ADDR)
+    - EEPROM.write(ADDR, Value)
+    - EEPROM.update(ADDR, Value)

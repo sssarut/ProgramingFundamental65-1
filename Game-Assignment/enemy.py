@@ -145,7 +145,6 @@ class Enemy(Entity):
 	def hit_reaction(self):
 		if not self.vulnerable:
 			self.direction *= -self.resistance
-		self.speed = self.monster_info['speed']
 
 	def update(self):
 		self.hit_reaction()

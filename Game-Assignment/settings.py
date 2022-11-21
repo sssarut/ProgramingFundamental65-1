@@ -61,5 +61,5 @@ magic_storage = {
 
 # enemy
 monster_data = {
-	'red_skull': {'health': 150,'exp':50,'damage':25,'attack_type': 'Flam', 'attack_sound':'../audio/attack/fire.wav', 'speed': 3, 'resistance': 2, 'attack_radius': 15, 'notice_radius': 10000},
-	'blu_skull': {'health': 150,'exp':50,'damage':15,'attack_type': 'Icey', 'attack_sound':'../audio/attack/ice.wav', 'speed': 4, 'resistance': 2, 'attack_radius': 15, 'notice_radius': 10000}}
+	'red_skull': {'health': 150,'exp':50,'damage':7,'attack_type': 'Flam', 'attack_sound':'../audio/attack/fire.wav', 'speed': 3, 'resistance': 2, 'attack_radius': 15, 'notice_radius': 10000},
+	'blu_skull': {'health': 150,'exp':50,'damage':5,'attack_type': 'Icey', 'attack_sound':'../audio/attack/ice.wav', 'speed': 4, 'resistance': 2, 'attack_radius': 15, 'notice_radius': 10000}}

@@ -14,6 +14,7 @@ class MagicPlayer:
 		'Lightning': pygame.mixer.Sound('../audio/Lightning.wav')
 		}
 		self.block_sound = pygame.mixer.Sound('../audio/block.wav')
+		self.Lightning_sound = pygame.mixer.Sound('../audio/Lightning.wav')
 
 	def heal(self,player,strength,cost,groups):
 		if player.energy >= cost:
@@ -67,5 +68,6 @@ class MagicPlayer:
 			player.energy -= cost
 			for target in detect:
 				self.animation_player.create_particles('Skill_Lightning', target.rect.center, groups, 'down')
-				self.sounds['Lightning'].play()
+				self.Lightning_sound.set_volume(0.2)
+				self.Lightning_sound.play()
 

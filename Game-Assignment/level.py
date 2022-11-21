@@ -151,6 +151,8 @@ class Level:
 			if detected_sprites:
 				for target in detected_sprites:
 					target.health -= strength
+					target.hit_time = pygame.time.get_ticks()
+					target.vulnerable = False
 					self.magic_player.Lightning(self.player , target.rect.center, cost, [self.visible_sprites], detected_sprites)
 			else:
 				self.current_area.kill()
@@ -164,7 +166,7 @@ class Level:
 			if detected_sprites:
 				for target in detected_sprites:
 					target.hit_time = pygame.time.get_ticks()
-					target.speed *= 10
+					target.speed *= 0.5
 					target.vulnerable = False
 			else:
 				self.current_area.kill()
@@ -195,6 +197,7 @@ class Level:
 			target_sprite = pygame.sprite.collide_rect(self.current_reward,self.player)
 			if target_sprite:
 				if 'Skill' in self.current_reward.sprite_type :
+					self.player.magic = list(magic_data.keys())[self.player.magic_index]
 					magic_data.pop(self.player.magic)
 					magic_data[self.current_reward.sprite_type] = magic_storage[self.current_reward.sprite_type]
 					self.ui.magic_graphics = []
@@ -344,7 +347,7 @@ class Level:
 			self.capture = 1
 			self.buff_sound.play()
 			self.player.health = self.player.stats['health']
-			if randint(0, 100) <= 10:
+			if randint(0, 100) <= 70:
 				self.create_reward()
 			else :
 				self.player.exp += 2000

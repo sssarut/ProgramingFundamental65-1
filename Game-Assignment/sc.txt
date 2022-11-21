@@ -1,1 +1,1 @@
-{"god": 10000000, "Hello There": 1700, "pop": 2250, "Yep": 2250, "Hello": 1555.44, "KK": 2360.0, "Lmao": 2560.52736, "Lol": 2950, "loll": 50, "Kasld[pokdfokds": 20100, "llsd": 1750, "d,sld": 3200, "s": 5050, "sdsad": 4850, "Yolo": 2200, "dssd": 2100, "Yay": 0}
+{"god": 10000000, "Hello There": 1700, "pop": 2250, "Yep": 2250, "Hello": 1555.44, "KK": 2360.0, "Lmao": 2560.52736, "Lol": 2950, "loll": 50, "Kasld[pokdfokds": 20100, "llsd": 1750, "d,sld": 3200, "s": 5050, "sdsad": 4850, "Yolo": 2200, "dssd": 2100, "Yay": 0, "w": 35350, "RIP": 3550, "Earth": 11247.44}
