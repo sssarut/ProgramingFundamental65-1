@@ -129,6 +129,11 @@ class Level:
 		
 		self.current_attack = Weapon(self.player,[self.visible_sprites,self.attack_sprites])
 
+	def destroy_attack(self):
+		if self.current_attack:
+			self.current_attack.kill()
+		self.current_attack = None
+	
 	def create_reward(self):
 		self.current_reward = Item([self.visible_sprites, self.item_sprites])
 	
@@ -172,10 +177,6 @@ class Level:
 				self.current_area.kill()
 				self.current_area = None
 
-	def destroy_attack(self):
-		if self.current_attack:
-			self.current_attack.kill()
-		self.current_attack = None
 
 	def player_attack_logic(self):
 		if self.attack_sprites:
@@ -192,22 +193,6 @@ class Level:
 						else:
 							target_sprite.get_damage(self.player,attack_sprite.sprite_type)
 
-	def pickup_logic(self):
-		if self.item_sprites and self.player.picking:
-			target_sprite = pygame.sprite.collide_rect(self.current_reward,self.player)
-			if target_sprite:
-				if 'Skill' in self.current_reward.sprite_type :
-					self.player.magic = list(magic_data.keys())[self.player.magic_index]
-					magic_data.pop(self.player.magic)
-					magic_data[self.current_reward.sprite_type] = magic_storage[self.current_reward.sprite_type]
-					self.ui.magic_graphics = []
-					for magic in magic_data.values():
-						magic = pygame.image.load(magic['graphic']).convert_alpha()
-						self.ui.magic_graphics.append(magic)
-				if 'Card' in self.current_reward.sprite_type :
-					pass
-			self.destroy_reward()
-	
 	def damage_player(self,amount,attack_type):
 		
 		if self.player.vulnerable and self.player.blocking:
@@ -231,6 +216,23 @@ class Level:
 		monster_data[particle_type]['health'] += 5
 		monster_data[particle_type]['damage'] += 1.5 
 		monster_data[particle_type]['speed'] += 0.01 
+	
+	def pickup_logic(self):
+		if self.item_sprites and self.player.picking:
+			target_sprite = pygame.sprite.collide_rect(self.current_reward,self.player)
+			if target_sprite:
+				if 'Skill' in self.current_reward.sprite_type :
+					self.player.magic = list(magic_data.keys())[self.player.magic_index]
+					magic_data.pop(self.player.magic)
+					magic_data[self.current_reward.sprite_type] = magic_storage[self.current_reward.sprite_type]
+					self.ui.magic_graphics = []
+					for magic in magic_data.values():
+						magic = pygame.image.load(magic['graphic']).convert_alpha()
+						self.ui.magic_graphics.append(magic)
+				if 'Card' in self.current_reward.sprite_type :
+					pass
+			self.destroy_reward()
+	
 	def add_exp(self,amount):
 
 		self.player.exp += amount

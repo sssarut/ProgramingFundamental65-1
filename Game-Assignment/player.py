@@ -39,8 +39,8 @@ class Player(Entity):
 		self.can_switch_magic = True
 		self.magic_switch_time = None
 
-		self.stats = {'health': 1500,'energy':250,'attack': 50,'magic': 10,'speed': 5}
-		self.max_stats = {'health': 15000, 'energy': 2500, 'attack': 500, 'magic' : 100, 'speed': 50}
+		self.stats = {'health': 1000,'energy':250,'attack': 50,'magic': 10,'speed': 5}
+		self.max_stats = {'health': 10000, 'energy': 2500, 'attack': 500, 'magic' : 100, 'speed': 10}
 		self.upgrade_cost = {'health': 100, 'energy': 100, 'attack': 100, 'magic' : 100, 'speed': 100}
 		self.health = self.stats['health']
 		self.energy = self.stats['energy']
@@ -92,6 +92,17 @@ class Player(Entity):
 				self.status = self.last_status
 			else:
 				self.direction.y = 0
+			if keys[pygame.K_d]  and not self.attacking and not self.casting and not self.tping and not self.blocking:
+				self.direction.x = 1
+				self.status = 'right'
+				self.last_status = 'right'
+			elif keys[pygame.K_a]  and not self.attacking and not self.casting and not self.tping and not self.blocking:
+				self.direction.x = -1
+				self.status = 'left'
+				self.last_status = 'left'
+			else:
+				self.direction.x = 0
+
 			if keys[pygame.K_LSHIFT] and (keys[pygame.K_a] or keys[pygame.K_s] or keys[pygame.K_d] or keys[pygame.K_w]) and not self.tping and not self.casting and not self.attacking and self.can_tp == True:
 				self.tping = True
 				if keys[pygame.K_a]:
@@ -112,17 +123,6 @@ class Player(Entity):
 			if self.blocking and ((not keys[pygame.K_f]) or self.block_count >= 6):
 				self.blocking = False
 				self.frame_index = 0
-			if keys[pygame.K_d]  and not self.attacking and not self.casting and not self.tping and not self.blocking:
-				self.direction.x = 1
-				self.status = 'right'
-				self.last_status = 'right'
-			elif keys[pygame.K_a]  and not self.attacking and not self.casting and not self.tping and not self.blocking:
-				self.direction.x = -1
-				self.status = 'left'
-				self.last_status = 'left'
-			else:
-				self.direction.x = 0
-
 			# attack input 
 			if keys[pygame.K_SPACE] and self.hitbox.centerx >= 1024 and self.hitbox.centery >= 1024 and self.hitbox.centerx <= 1152 and self.hitbox.centery <= 1152 and self.point >= 1200:
 				self.point = 0

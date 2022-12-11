@@ -47,14 +47,14 @@ weapon_data = {
 
 # magic
 magic_data = {
-	'flame': {'strength': 5,'cost': 20,'graphic':'../graphics/particles/flame/fire.png'},
-	'heal' : {'strength': 20,'cost': 10,'graphic':'../graphics/particles/heal/heal.png'}}
+	'heal' : {'strength': 20,'cost': 10,'graphic':'../graphics/particles/heal/heal.png'},
+	'Skill_Lightning' : {'strength' : 35, 'cost' : 40, 'graphic' : '../graphics/particles/Skill_Lightning/Full.png'},	
+	}
 
 magic_storage = {
 	'flame': {'strength': 5,'cost': 20,'graphic':'../graphics/particles/flame/fire.png'},
 	'heal' : {'strength': 20,'cost': 10,'graphic':'../graphics/particles/heal/heal.png'},
-	'Skill_Lightning' : {'strength' : 35, 'cost' : 40, 'graphic' : '../graphics/particles/Skill_Lightning/Full.png'},
-	'Skill_Burst' : {'strength' : 30, 'cost' : 20, 'graphic' : '../graphics/particles/Skill_Burst/Full.png'},
+	'Skill_Lightning' : {'strength' : 35, 'cost' : 40, 'graphic' : '../graphics/particles/Skill_Lightning/Full.png'},	
 	'Skill_Stun' : {'strength' : 0, 'cost' : 10, 'graphic' : '../graphics/particles/Skill_Stun/Full.png'},
 	'Skill_Laser' : {'strength' : 40, 'cost' : 50, 'graphic' : '../graphics/particles/Skill_Laser/Full.png'}
 	}
